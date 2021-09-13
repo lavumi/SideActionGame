@@ -42,6 +42,7 @@ export default class GameManager extends cc.Component {
     _timeCount : number = 30;
     _health = 3;
     _feverPerScore = 99;
+    _insaneTimer = 0.2;
     _feverMode : boolean = false;
 
 
@@ -134,6 +135,7 @@ export default class GameManager extends cc.Component {
         this._lbGo.active            = false;
         this._lbReady.active         = false;
         this._feverGauge.node.active = true;
+        this._heartContainer.active = true;
         this._gameUI.active = true;
         this._menuUI.active = false;
 
@@ -149,13 +151,14 @@ export default class GameManager extends cc.Component {
                 let heart = cc.instantiate(this.heartPrefab);
                 this._heartContainer.addChild(heart);
                 this._heartArr.push( heart );
+                cc.log('GameManager.ts(152)' , "add heart" )
             }
 
             for ( let i = 0 ; i < 7 ; i ++ ){
                 this.makeNewMonster();
             }
+            this.setInsaneTimer();
             this.schedule( this._updateTimeCount , 1 );
-
             this._lbGo.active = true;
         })
         .delay(0.5)
@@ -199,14 +202,7 @@ export default class GameManager extends cc.Component {
     leftAction(){
         if ( this._testMonsterAr[0] === -1  || this._feverMode ){
             this.player.leftAction();
-            if ( this._monsterArr[0].damaged() ){
-                this._testMonsterAr.splice(0,1);
-                this._monsterArr.splice(0,1);
-                this.moveToCenter();
-                this.makeNewMonster();
-                this.score();
-                this.addFever();
-            }
+            this.attackMonster();
         }
         else {
             this.damaged();
@@ -214,24 +210,27 @@ export default class GameManager extends cc.Component {
     }
 
     rightAction(){
-        // cc.log('GameMamager.ts(37)' , "rightAction" )
         if ( this._testMonsterAr[0] === 1 || this._feverMode ){
             this.player.rightAction();
-            if ( this._monsterArr[0].damaged() ){
-                this._testMonsterAr.splice(0,1);
-                this._monsterArr.splice(0,1);
-                this.moveToCenter();
-                this.makeNewMonster();
-                this.score();
-                this.addFever();
-
-            }
+            this.attackMonster();
         }
         else {
             this.damaged();
         }
     }
 
+
+    attackMonster(){
+        if ( this._monsterArr[0].damaged() ){
+            this._testMonsterAr.splice(0,1);
+            this._monsterArr.splice(0,1);
+            this.moveToCenter();
+            this.makeNewMonster();
+            this.score();
+            this.addFever();
+            this.setInsaneTimer();
+        }
+    }
 
     moveToCenter(){
         for( let i = 0 ; i < this._testMonsterAr.length ; i ++ ){
@@ -256,6 +255,13 @@ export default class GameManager extends cc.Component {
 
         let health = Math.floor(Math.random() * 3 );
         monster.getComponent(Monster).init(health + 1 , pos === -1  , this._difficulty);
+    }
+
+
+
+    setInsaneTimer(){
+        if ( this._difficulty === 3)
+            this._monsterArr[0].startInsaneTimer();
     }
 
 
@@ -305,6 +311,8 @@ export default class GameManager extends cc.Component {
     }
 
 
+
+
     damaged(){
         this._health--;
         // this._lbHealth.string = this._health +"";
@@ -316,6 +324,7 @@ export default class GameManager extends cc.Component {
 
 
     gameOver(){
+        this._monsterArr[0].pauseTimer();
         this._lbGameOver.active = true;
         this.getComponent(InputManager).pauseInput( true );
         this.unschedule( this._updateTimeCount );
