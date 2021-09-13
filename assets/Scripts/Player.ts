@@ -8,7 +8,7 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Player extends cc.Component {
 
     _animation : cc.Animation = null!
     _animationName : string[] = [
@@ -55,7 +55,7 @@ export default class NewClass extends cc.Component {
         }
         clearTimeout(this._actionTimeout);
         this._actionTimeout = -1;
-        cc.log('Player.ts(57)' , 'characterAtk' + this._currentAtkAnim );
+        // cc.log('Player.ts(57)' , 'characterAtk' + this._currentAtkAnim );
         this._animation.play('characterAtk' + this._currentAtkAnim );
     }
 

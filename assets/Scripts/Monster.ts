@@ -8,14 +8,14 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Monster extends cc.Component {
 
     health : number = 1;
 
     lbHealth : cc.Label = null!;
     hp : cc.Node[] = [];
 
-    init( health : number, direction : boolean ){
+    init( health : number, direction : boolean  , difficulty : number){
         this.node.scale = 1;
         if ( direction ){
             this.node.scaleX = -1;
@@ -36,7 +36,7 @@ export default class NewClass extends cc.Component {
             this.hp[1].active = false;
             this.hp[2].active = false;
         }
-        if ( health === 2 ){
+        else if ( health === 2 ){
             this.node.color = cc.Color.GREEN;
             this.hp[0].color = cc.Color.GREEN;
             this.hp[1].color = cc.Color.GREEN;
@@ -45,7 +45,7 @@ export default class NewClass extends cc.Component {
             this.hp[1].active = true;
             this.hp[2].active = false;
         }
-        if ( health === 3 ){
+        else if ( health === 3 ){
             this.node.color = cc.Color.BLUE;
             this.hp[0].color = cc.Color.BLUE;
             this.hp[1].color = cc.Color.BLUE;
@@ -53,6 +53,12 @@ export default class NewClass extends cc.Component {
             this.hp[0].active = true;
             this.hp[1].active = true;
             this.hp[2].active = true;
+        }
+
+        if ( difficulty === 3 ){
+            this.hp[0].active = false;
+            this.hp[1].active = false;
+            this.hp[2].active = false;
         }
 
         this.health = health;
@@ -67,7 +73,7 @@ export default class NewClass extends cc.Component {
     }
 
 
-    damaged(){
+    damaged() : boolean {
         this.health--;
         this.lbHealth.string = this.health + "";
         this.hp[this.health].active = false;

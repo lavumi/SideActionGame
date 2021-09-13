@@ -11,7 +11,7 @@ export default class InputManager extends cc.Component {
     _pressB : boolean = false;
 
 
-    _pause : boolean = false;
+    _pause : boolean = true;
     gameMamager : any = null!;
 
 
