@@ -29,13 +29,13 @@ export default class Monster extends cc.Component {
         this.gameManager = cc.find("GameManager").getComponent(GameManager);
     }
 
-    init( direction : boolean  , difficulty : number){
+    init( isLeft : boolean  , difficulty : number){
 
         let rnd = difficulty === 0 ? 2 : 3;
         let health = Math.floor(Math.random() * rnd ) + 1;
 
 
-        if ( direction ){
+        if ( isLeft ){
             this.node.scaleX = -1;
         }
 
@@ -93,7 +93,7 @@ export default class Monster extends cc.Component {
     }
 
 
-    damaged() : boolean {
+    damaged( onePunch : boolean ) : boolean {
         this.health--;
         this.lbHealth.string = this.health + "";
         this.hp[this.health].active = false;
@@ -101,8 +101,8 @@ export default class Monster extends cc.Component {
         this._atkTimerCur = this._atkTimerBase;
 
 
-        if ( this.health === 0 ){
-            this.node.removeFromParent();
+        if ( this.health === 0  || onePunch ){
+            this.dieAnimation();
             return true;
         }
         else {
@@ -111,6 +111,14 @@ export default class Monster extends cc.Component {
 
     }
 
+
+    dieAnimation(){
+        cc.tween( this.node )
+        .to( 0.1 , { opacity : 0 , position : cc.v2( this.node.x , 100) })
+        .removeSelf()
+        .start();
+        // this.node.removeFromParent();
+    }
 
 
     _atkTimerCur : number = 99;
