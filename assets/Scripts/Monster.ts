@@ -29,8 +29,12 @@ export default class Monster extends cc.Component {
         this.gameManager = cc.find("GameManager").getComponent(GameManager);
     }
 
-    init( health : number, direction : boolean  , difficulty : number){
-        this.node.scale = 1;
+    init( direction : boolean  , difficulty : number){
+
+        let rnd = difficulty === 0 ? 2 : 3;
+        let health = Math.floor(Math.random() * rnd );
+
+
         if ( direction ){
             this.node.scaleX = -1;
         }
@@ -41,7 +45,7 @@ export default class Monster extends cc.Component {
         this.hp.push( this.node.children[3]);
 
 
-        if ( health === 1 || difficulty === 0){
+        if ( health === 1 ){
             this.node.color = cc.Color.RED;
             this.hp[0].color = cc.Color.RED;
             this.hp[1].color = cc.Color.RED;

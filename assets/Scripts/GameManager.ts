@@ -253,8 +253,7 @@ export default class GameManager extends cc.Component {
         this._testMonsterAr.push( pos );
         this._monsterArr.push(monster.getComponent(Monster));
 
-        let health = Math.floor(Math.random() * 3 );
-        monster.getComponent(Monster).init(health + 1 , pos === -1  , this._difficulty);
+        monster.getComponent(Monster).init( pos === -1  , this._difficulty);
     }
 
 
