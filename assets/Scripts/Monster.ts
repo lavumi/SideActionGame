@@ -32,7 +32,7 @@ export default class Monster extends cc.Component {
     init( direction : boolean  , difficulty : number){
 
         let rnd = difficulty === 0 ? 2 : 3;
-        let health = Math.floor(Math.random() * rnd );
+        let health = Math.floor(Math.random() * rnd ) + 1;
 
 
         if ( direction ){
