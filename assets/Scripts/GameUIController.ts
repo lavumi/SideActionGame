@@ -28,6 +28,8 @@ export default class GameUIController extends cc.Component {
     _heartContainer : cc.Node = null!;
 
 
+    _lbCombo : cc.Label = null!;
+
     @property(cc.Prefab)
     heartPrefab : cc.Prefab = null!;
 
@@ -46,6 +48,8 @@ export default class GameUIController extends cc.Component {
         this._heartContainer    = cc.find("heartContainer", this._gameUI);
         this._btnMain           = cc.find("lbGameOver/btnMain" , this._gameUI );
         this._lbFeverFinish     = cc.find("lbFeverFinish", this._gameUI);
+        this._lbCombo           = cc.find("comboUI/lbCombo", this._gameUI).getComponent(cc.Label);
+
 
         this._lbScore.node.active    = true;
         this._lbTime.node.active     = true;
@@ -62,23 +66,7 @@ export default class GameUIController extends cc.Component {
 
 
 
-    initializeGame( gameConfig : any ){
-
-
-
-        this._feverGauge.progress = gameConfig.fever;
-        this._lbTime.string = gameConfig.timeCount + "";
-        this._lbScore.string = gameConfig.score;
-
-
-
-        for( let i = 0 ; i < gameConfig.health ; i ++ ){
-            let heart = cc.instantiate(this.heartPrefab);
-            this._heartContainer.addChild(heart);
-        }
-
-
-
+    initializeGame(){
         this._lbScore.node.active    = true;
         this._lbTime.node.active     = true;
         this._lbGameOver.active      = false;
@@ -113,6 +101,19 @@ export default class GameUIController extends cc.Component {
         this._heartContainer.removeAllChildren();
     }
 
+    updateHealth( health : number ){
+        //이 코드 지금 체력 보다 더 많이 만들고 간다
+        while( health >= this._heartContainer.children.length ){
+            let heart = cc.instantiate(this.heartPrefab);
+            this._heartContainer.addChild(heart);
+        }
+        this._heartContainer.children[health].active = false;
+    }
+
+    damaged(){
+        this._heartContainer.children[0].removeFromParent();
+    }
+
     updateRemainTime( time : number ){
         this._lbTime.string = time + "";
     }
@@ -145,5 +146,16 @@ export default class GameUIController extends cc.Component {
 
     gameOver(){
         this._lbGameOver.active = true;
+    }
+
+    updateCombo( count : number ){
+        if ( count === 0 ){
+            this._lbCombo.node.parent.active = false;
+        }
+        else {
+            this._lbCombo.node.parent.active = true;
+        }
+
+        this._lbCombo.string = count + " Combo";
     }
 }

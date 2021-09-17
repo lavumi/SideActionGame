@@ -37,6 +37,7 @@ export default class GameManager extends cc.Component {
     _difficulty : number = 0;
     _score = 0;
     _fever = 0;
+    _comboCount : number= 0;
     _timeCount : number = 30;
     _health = 3;
     _feverPerScore = 99;
@@ -55,8 +56,6 @@ export default class GameManager extends cc.Component {
     //GameNode
     _testMonsterAr : number[] = [];
     _monsterArr : Monster[] = [];
-    _heartArr : cc.Node[] = [];
-
 
     _monsterCount : number = 4;
 
@@ -98,18 +97,21 @@ export default class GameManager extends cc.Component {
     startGame( diff : number ){
         this._difficulty = diff;
 
-        let gameConfig = {
-            timeCount : this._timeCount,
-            fever : this._fever,
-            score : this._score,
-            health : this._health
-        }
+
 
         this._gameUI.node.active = true;
         this._menuUI.active = false;
 
 
-        this._gameUI.initializeGame( gameConfig );
+        this._gameUI.initializeGame();
+
+
+        this._gameUI.updateHealth(      this._health );
+        this._gameUI.updateFever(       this._fever);
+        this._gameUI.updateRemainTime(  this._timeCount);
+        this._gameUI.updateScore(       this._score );
+        this._gameUI.updateCombo(       this._comboCount );
+
 
         for ( let i = 0 ; i < this._monsterCount ; i ++ ){
             this.makeNewMonster();
@@ -142,8 +144,6 @@ export default class GameManager extends cc.Component {
         this._monsterArr.length = 0;
 
 
-
-        this._heartArr.length = 0;
 
     }
 
@@ -186,6 +186,8 @@ export default class GameManager extends cc.Component {
             this.addFever();
             this.setInsaneTimer();
         }
+
+        this._gameUI.updateCombo(       this._comboCount++ );
     }
 
     moveToCenter(){
@@ -257,7 +259,10 @@ export default class GameManager extends cc.Component {
 
     damaged(){
         this._health--;
-        this._heartArr[ this._health ].active = false;
+        this._gameUI.updateHealth( this._health );
+
+        this._comboCount = 0;
+        this._gameUI.updateCombo(       this._comboCount );
         if ( this._health === 0 ){
             this.gameOver();
         }
