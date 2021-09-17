@@ -88,6 +88,7 @@ export default class GameManager extends cc.Component {
 
     showMain(){
         this.resetGame();
+
         this._gameUI.node.active = false;
         this._menuUI.active = true;
     }
@@ -101,8 +102,6 @@ export default class GameManager extends cc.Component {
 
         this._gameUI.node.active = true;
         this._menuUI.active = false;
-
-
         this._gameUI.initializeGame();
 
 
@@ -142,9 +141,6 @@ export default class GameManager extends cc.Component {
             element.node.removeFromParent();
         })
         this._monsterArr.length = 0;
-
-
-
     }
 
     _updateTimeCount(){
@@ -221,8 +217,6 @@ export default class GameManager extends cc.Component {
 
         monster.getComponent(Monster).init( pos === DIRECTION.LEFT , this._difficulty);
     }
-
-
 
     setInsaneTimer(){
         if ( this._difficulty === 3)

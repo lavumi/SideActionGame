@@ -61,7 +61,6 @@ export default class GameUIController extends cc.Component {
 
         this._btnMain.on('click', this._gameManager.showMain , this._gameManager );
 
-        cc.log('GameUIController.ts(62)' , "onLoad" );
     }
 
 
@@ -76,6 +75,7 @@ export default class GameUIController extends cc.Component {
         this._lbReady.active         = false;
         this._feverGauge.node.active = true;
         this._heartContainer.active = true;
+        this._heartContainer.removeAllChildren();
     }
 
     startCountDown( countDown : number , gameStartCallback : ()=>void){
@@ -97,10 +97,6 @@ export default class GameUIController extends cc.Component {
     }
 
 
-    resetUI(){
-        this._heartContainer.removeAllChildren();
-    }
-
     updateHealth( health : number ){
         //이 코드 지금 체력 보다 더 많이 만들고 간다
         while( health >= this._heartContainer.children.length ){
@@ -108,10 +104,6 @@ export default class GameUIController extends cc.Component {
             this._heartContainer.addChild(heart);
         }
         this._heartContainer.children[health].active = false;
-    }
-
-    damaged(){
-        this._heartContainer.children[0].removeFromParent();
     }
 
     updateRemainTime( time : number ){
