@@ -3,8 +3,8 @@
   "_name": "characterAtk3",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.4,
-  "sample": 30,
+  "_duration": 0.12,
+  "sample": 100,
   "speed": 1,
   "wrapMode": 1,
   "curveData": {
@@ -18,31 +18,31 @@
             }
           },
           {
-            "frame": 0.03333333333333333,
+            "frame": 0.01,
             "value": {
               "__uuid__": "7568c7b2-ef7c-4dc9-a5db-7127b2186b36"
             }
           },
           {
-            "frame": 0.13333333333333333,
+            "frame": 0.04,
             "value": {
               "__uuid__": "fc47d80d-5d3f-4519-a178-4f67b34f1051"
             }
           },
           {
-            "frame": 0.23333333333333334,
+            "frame": 0.07,
             "value": {
               "__uuid__": "38679cc3-ecb0-4a26-bf34-9bb33575590f"
             }
           },
           {
-            "frame": 0.3,
+            "frame": 0.09,
             "value": {
               "__uuid__": "3bc265a8-ac87-4953-980f-5b228bcf601a"
             }
           },
           {
-            "frame": 0.36666666666666664,
+            "frame": 0.11,
             "value": {
               "__uuid__": "30462653-0e30-4a1d-90f4-a6cdcee0c0c2"
             }
