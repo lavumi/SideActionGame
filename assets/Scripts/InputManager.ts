@@ -11,7 +11,6 @@ export default class InputManager extends cc.Component {
     _pressB : boolean = false;
 
 
-    _pause : boolean = true;
     gameMamager : any = null!;
 
 
@@ -30,13 +29,8 @@ export default class InputManager extends cc.Component {
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     }
 
-    pauseInput( pause : boolean ){
-        this._pause = pause;
-    }
-
 
     onKeyDown(event : cc.Event.EventKeyboard) {
-        if ( this._pause ) return;
         switch(event.keyCode) {
             case cc.macro.KEY.left:
                 if ( this._pressA === false ){

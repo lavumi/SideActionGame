@@ -5,8 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import InputManager from "./InputManager";
 import GameUIController from "./GameUIController";
+import ScoreUIController from "./ScoreUIController"
 import Monster from "./Monster";
 import Player from "./Player";
 const {ccclass, property} = cc._decorator;
@@ -31,6 +31,7 @@ export default class GameManager extends cc.Component {
     _btnDiff : cc.Node[] = [];
 
     _gameUI : GameUIController = null!;
+    _scoreUI : ScoreUIController = null!;
 
 
     //InGame Value
@@ -38,11 +39,14 @@ export default class GameManager extends cc.Component {
     _score = 0;
     _fever = 0;
     _comboCount : number= 0;
+    _maxCombo : number = 0;
     _timeCount : number = 30;
     _health = 3;
     _feverPerScore = 99;
     _insaneTimer = 0.2;
     _feverMode : boolean = false;
+
+    _blockInput : boolean = false;
 
 
 
@@ -61,9 +65,22 @@ export default class GameManager extends cc.Component {
 
     onLoad(){
         this.initMenu();
+
         this._gameUI = cc.find("GameUI").getComponent(GameUIController);
+        this._scoreUI = cc.find("ScoreUI").getComponent(ScoreUIController);
+
+
+        // this.showMain();
+    }
+
+
+
+    start(){
+        // this.showResult();
         this.showMain();
     }
+
+
 
 
     initMenu(){
@@ -77,34 +94,40 @@ export default class GameManager extends cc.Component {
 
     }
 
-
-
-    initGameUI(){
-
-
-
-    }
-
-
     showMain(){
         this.resetGame();
-
         this._gameUI.node.active = false;
         this._menuUI.active = true;
+        this._scoreUI.node.active = false;
+    }
+
+    showResult(){
+        this._gameUI.node.active = false;
+        this._menuUI.active = false;
+        this._scoreUI.node.active = true;
+        this._scoreUI.showResult(this._score, this._maxCombo , this._health * 100);
+    }
+
+    restartGame(){
+        this.resetGame();
+        this.startGame( this._difficulty );
     }
 
 
 
     startGame( diff : number ){
-        this._difficulty = diff;
-
 
 
         this._gameUI.node.active = true;
         this._menuUI.active = false;
+        this._scoreUI.node.active = false;
+
+
+
+        this._difficulty = diff;
+
+
         this._gameUI.initializeGame();
-
-
         this._gameUI.updateHealth(      this._health );
         this._gameUI.updateFever(       this._fever);
         this._gameUI.updateRemainTime(  this._timeCount);
@@ -122,7 +145,7 @@ export default class GameManager extends cc.Component {
         let countDown = 1;
         this._gameUI.startCountDown( countDown  , ()=>{
             this.setInsaneTimer();
-            this.getComponent(InputManager).pauseInput( false );
+            this._blockInput = false;
             this.schedule( this._updateTimeCount , 1 );
         });
     }
@@ -135,6 +158,8 @@ export default class GameManager extends cc.Component {
         this._timeCount = 30;
         this._health = 3;
         this._feverPerScore = 10;
+        this._comboCount = 0;
+        this._maxCombo = 0;
 
         this._testMonsterAr.length = 0;
         this._monsterArr.forEach( element =>{
@@ -152,6 +177,8 @@ export default class GameManager extends cc.Component {
     }
 
     leftAction(){
+        if ( this._blockInput === true ) return;
+
         if ( this._testMonsterAr[0] === DIRECTION.LEFT  || this._feverMode ){
             this.player.leftAction();
             this.attackMonster();
@@ -162,6 +189,8 @@ export default class GameManager extends cc.Component {
     }
 
     rightAction(){
+        if ( this._blockInput === true ) return;
+
         if ( this._testMonsterAr[0] === DIRECTION.RIGHT || this._feverMode ){
             this.player.rightAction();
             this.attackMonster();
@@ -173,6 +202,9 @@ export default class GameManager extends cc.Component {
 
 
     attackMonster(){
+        cc.log("attack monster " + this._feverMode );
+        if ( this._monsterArr.length === 0 ) return; 
+
         if ( this._monsterArr[0].damaged( this._feverMode )  ){
             this._testMonsterAr.splice(0,1);
             this._monsterArr.splice(0,1);
@@ -183,18 +215,24 @@ export default class GameManager extends cc.Component {
             this.setInsaneTimer();
         }
 
+        this._maxCombo = this._maxCombo > this._comboCount ? this._maxCombo : this._comboCount;
         this._gameUI.updateCombo(       this._comboCount++ );
     }
 
     moveToCenter(){
+
+        this._blockInput = true;
         for( let i = 0 ; i < this._testMonsterAr.length ; i ++ ){
             let targetPos = cc.v2((i + 1) * 100 *  this._testMonsterAr[i] , 0);
             cc.tween( this._monsterArr[i].node )
-            .call(()=>{        this.getComponent(InputManager).pauseInput( true ); })
             .to( 0.1 , { position : targetPos})
-            .call(()=>{        this.getComponent(InputManager).pauseInput( false ); })
             .start();
         }
+
+        cc.tween( this.node )
+        .delay(0.1)
+        .call(()=>{ this._blockInput = false; })
+        .start();
     }
 
     makeNewMonster(){
@@ -236,7 +274,7 @@ export default class GameManager extends cc.Component {
 
         this._gameUI.updateFever( this._fever );
         if ( this._fever >= 1) {
-            this.feverOn();
+            // this.feverOn();
         }
     }
 
@@ -244,31 +282,38 @@ export default class GameManager extends cc.Component {
         this._feverMode = true;
         this._gameUI.setFeverMode();
         this.schedule( this._updateFever  );
+        cc.log("fever start ");
     }
-
-
-
 
 
 
     damaged(){
         this._health--;
+        if ( this._health <= 0 ){
+            this.gameOver();
+        }
+
         this._gameUI.updateHealth( this._health );
+
 
         this._comboCount = 0;
         this._gameUI.updateCombo(       this._comboCount );
-        if ( this._health === 0 ){
-            this.gameOver();
-        }
+        cc.log( this._health );
+
     }
 
 
     gameOver(){
+        this._blockInput = true;
         this._monsterArr[0].pauseTimer();
         this._gameUI.gameOver();
-        this.getComponent(InputManager).pauseInput( true );
         this.unschedule( this._updateTimeCount );
         this.unschedule( this._updateFever );
+
+
+        setTimeout( ()=>{
+            this.showResult();
+        } , 1500 );
     }
 
 
@@ -284,9 +329,9 @@ export default class GameManager extends cc.Component {
     }
 
     finishFever(){
-        let self = this;
-
-        this.getComponent(InputManager).pauseInput( true );
+        cc.log("fever finished");
+        this._feverMode = false;
+        this._blockInput = true;
 
         //몬스터 싹 날리기
         this._monsterArr.forEach( element =>{
@@ -312,8 +357,7 @@ export default class GameManager extends cc.Component {
         })
         .delay( this.gameRestartDelay )
         .call( ()=>{
-            this.getComponent(InputManager).pauseInput( false );
-            this._feverMode = false;
+            this._blockInput = false;
         })
         .start();
     }

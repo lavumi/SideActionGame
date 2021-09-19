@@ -75,7 +75,15 @@ export default class GameUIController extends cc.Component {
         this._lbReady.active         = false;
         this._feverGauge.node.active = true;
         this._heartContainer.active = true;
-        this._heartContainer.removeAllChildren();
+        // this._heartContainer.removeAllChildren();
+
+
+        let heart = cc.instantiate(this.heartPrefab);
+        this._heartContainer.addChild(heart);
+        heart = cc.instantiate(this.heartPrefab);
+        this._heartContainer.addChild(heart);
+        heart = cc.instantiate(this.heartPrefab);
+        this._heartContainer.addChild(heart);
     }
 
     startCountDown( countDown : number , gameStartCallback : ()=>void){
@@ -98,12 +106,13 @@ export default class GameUIController extends cc.Component {
 
 
     updateHealth( health : number ){
-        //이 코드 지금 체력 보다 더 많이 만들고 간다
-        while( health >= this._heartContainer.children.length ){
-            let heart = cc.instantiate(this.heartPrefab);
-            this._heartContainer.addChild(heart);
+        if ( health < 0) cc.warn( "health below 0 " , health );
+        for( let i = 0 ; i < this._heartContainer.children.length ; i ++ ){
+            if ( i < health )
+                this._heartContainer.children[i].active = true;
+            else 
+                this._heartContainer.children[i].active = false;
         }
-        this._heartContainer.children[health].active = false;
     }
 
     updateRemainTime( time : number ){
