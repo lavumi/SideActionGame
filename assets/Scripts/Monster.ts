@@ -108,7 +108,6 @@ export default class Monster extends cc.Component {
         else {
             return false;
         }
-
     }
 
 
@@ -140,7 +139,7 @@ export default class Monster extends cc.Component {
 
     _attack(){
         // cc.log('Monster.ts(118)' , "_attack" );
-        this.gameManager.damaged();
+        this.gameManager.playerDamaged();
     }
 
     pauseTimer(){

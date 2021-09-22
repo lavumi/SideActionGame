@@ -59,7 +59,4 @@ export default class InputManager extends cc.Component {
 
     }
 
-    lateUpdate (dt : number) {
-
-    }
 }

@@ -46,7 +46,9 @@ export default class GameManager extends cc.Component {
     _insaneTimer = 0.2;
     _feverMode : boolean = false;
 
-    _blockInput : boolean = false;
+    _blockInputMovement : boolean = true;
+    _blockInputFeverFinish : boolean = true;
+
 
 
 
@@ -58,7 +60,7 @@ export default class GameManager extends cc.Component {
 
 
     //GameNode
-    _testMonsterAr : number[] = [];
+    _monsterDirectionArray : number[] = [];
     _monsterArr : Monster[] = [];
 
     _monsterCount : number = 4;
@@ -70,7 +72,7 @@ export default class GameManager extends cc.Component {
         this._scoreUI = cc.find("ScoreUI").getComponent(ScoreUIController);
 
 
-        // this.showMain();
+
     }
 
 
@@ -78,6 +80,9 @@ export default class GameManager extends cc.Component {
     start(){
         // this.showResult();
         this.showMain();
+
+
+        // this.schedule( this.runCheat );
     }
 
 
@@ -145,7 +150,8 @@ export default class GameManager extends cc.Component {
         let countDown = 1;
         this._gameUI.startCountDown( countDown  , ()=>{
             this.setInsaneTimer();
-            this._blockInput = false;
+            this._blockInputMovement = false;
+            this._blockInputFeverFinish = false;
             this.schedule( this._updateTimeCount , 1 );
         });
     }
@@ -161,7 +167,7 @@ export default class GameManager extends cc.Component {
         this._comboCount = 0;
         this._maxCombo = 0;
 
-        this._testMonsterAr.length = 0;
+        this._monsterDirectionArray.length = 0;
         this._monsterArr.forEach( element =>{
             element.node.removeFromParent();
         })
@@ -177,26 +183,26 @@ export default class GameManager extends cc.Component {
     }
 
     leftAction(){
-        if ( this._blockInput === true ) return;
+        if ( this._blockInputMovement === true  || this._blockInputFeverFinish === true ) return;
 
-        if ( this._testMonsterAr[0] === DIRECTION.LEFT  || this._feverMode ){
+        if ( this._monsterDirectionArray[0] === DIRECTION.LEFT  || this._feverMode ){
             this.player.leftAction();
             this.attackMonster();
         }
         else {
-            this.damaged();
+            this.playerDamaged();
         }
     }
 
     rightAction(){
-        if ( this._blockInput === true ) return;
+        if ( this._blockInputMovement === true  || this._blockInputFeverFinish === true ) return;
 
-        if ( this._testMonsterAr[0] === DIRECTION.RIGHT || this._feverMode ){
+        if ( this._monsterDirectionArray[0] === DIRECTION.RIGHT || this._feverMode ){
             this.player.rightAction();
             this.attackMonster();
         }
         else {
-            this.damaged();
+            this.playerDamaged();
         }
     }
 
@@ -206,7 +212,7 @@ export default class GameManager extends cc.Component {
         if ( this._monsterArr.length === 0 ) return; 
 
         if ( this._monsterArr[0].damaged( this._feverMode )  ){
-            this._testMonsterAr.splice(0,1);
+            this._monsterDirectionArray.splice(0,1);
             this._monsterArr.splice(0,1);
             this.moveToCenter();
             this.makeNewMonster();
@@ -221,9 +227,9 @@ export default class GameManager extends cc.Component {
 
     moveToCenter(){
 
-        this._blockInput = true;
-        for( let i = 0 ; i < this._testMonsterAr.length ; i ++ ){
-            let targetPos = cc.v2((i + 1) * 100 *  this._testMonsterAr[i] , 0);
+        this._blockInputMovement = true;
+        for( let i = 0 ; i < this._monsterDirectionArray.length ; i ++ ){
+            let targetPos = cc.v2((i + 1) * 100 *  this._monsterDirectionArray[i] , 0);
             cc.tween( this._monsterArr[i].node )
             .to( 0.1 , { position : targetPos})
             .start();
@@ -231,18 +237,22 @@ export default class GameManager extends cc.Component {
 
         cc.tween( this.node )
         .delay(0.1)
-        .call(()=>{ this._blockInput = false; })
+        .call(()=>{ this._blockInputMovement = false; })
         .start();
     }
 
     makeNewMonster(){
         let pos = Math.floor(Math.random() * 2);
         if ( pos === 0 ) pos = -1;
-        let index = this._testMonsterAr.length;
+        this._monsterDirectionArray.push( pos );
+
+
+
+        let index = this._monsterDirectionArray.length;
         let monster = cc.instantiate(this.monsterPrefab);
 
 
-        let moveTargetPos = cc.v2((index + 1) * 100 *  pos , 0 );
+        let moveTargetPos = cc.v2(index  * 100 *  pos , 0 );
         monster.setPosition( 5 * 100 *  pos , 0 );
 
         cc.tween( monster )
@@ -250,7 +260,7 @@ export default class GameManager extends cc.Component {
         .start();
 
         this.node.addChild( monster );
-        this._testMonsterAr.push( pos );
+
         this._monsterArr.push(monster.getComponent(Monster));
 
         monster.getComponent(Monster).init( pos === DIRECTION.LEFT , this._difficulty);
@@ -274,20 +284,26 @@ export default class GameManager extends cc.Component {
 
         this._gameUI.updateFever( this._fever );
         if ( this._fever >= 1) {
-            // this.feverOn();
+            this.feverOn();
         }
     }
 
     feverOn(){
         this._feverMode = true;
         this._gameUI.setFeverMode();
+        this.unschedule( this._updateTimeCount );
+
+        // this._timeCount--;
+        this._updateTimeCount();
+
         this.schedule( this._updateFever  );
         cc.log("fever start ");
     }
 
 
 
-    damaged(){
+    playerDamaged(){
+
         this._health--;
         if ( this._health <= 0 ){
             this.gameOver();
@@ -298,13 +314,13 @@ export default class GameManager extends cc.Component {
 
         this._comboCount = 0;
         this._gameUI.updateCombo(       this._comboCount );
-        cc.log( this._health );
 
     }
 
 
     gameOver(){
-        this._blockInput = true;
+        this._blockInputFeverFinish = true;
+        this._blockInputMovement = true;
         this._monsterArr[0].pauseTimer();
         this._gameUI.gameOver();
         this.unschedule( this._updateTimeCount );
@@ -329,17 +345,18 @@ export default class GameManager extends cc.Component {
     }
 
     finishFever(){
-        cc.log("fever finished");
+        cc.log("fever finished" , "block inpug");
         this._feverMode = false;
-        this._blockInput = true;
+        this._blockInputFeverFinish = true;
+
 
         //몬스터 싹 날리기
         this._monsterArr.forEach( element =>{
-            element.damaged( this._feverMode );
+            element.damaged( true );
         });
-        this._testMonsterAr.length = 0;
+        this._monsterDirectionArray.length = 0;
         this._monsterArr.length = 0;
-
+        //
 
 
 
@@ -357,11 +374,21 @@ export default class GameManager extends cc.Component {
         })
         .delay( this.gameRestartDelay )
         .call( ()=>{
-            this._blockInput = false;
+            this.schedule( this._updateTimeCount , 1 );
+            this._blockInputFeverFinish = false;
         })
         .start();
     }
 
 
 
+    runCheat(){
+        if ( this._monsterDirectionArray.length === 0 ) return;
+
+        if ( this._monsterDirectionArray[0] === DIRECTION.LEFT )
+            this.leftAction();
+        else 
+            this.rightAction();
+
+    }
 }

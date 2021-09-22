@@ -64,6 +64,11 @@ export default class NewClass extends cc.Component {
         this._combo = combo;
         this._life = life;
 
+        this._lbScore.string = "";
+        this._lbCombo.string = "";
+        this._lbLife.string = "";
+        this._lbTotal.string = "";
+
         cc.tween( this.node )
         .call( ()=>{
             this._labelCounting( this._lbScore , 0 , score );
@@ -104,9 +109,6 @@ export default class NewClass extends cc.Component {
     }
 
     _skipCounting(){
-
-        cc.log("skipCounting");
-        // cc.tween( this.node ).stop();
         cc.director.getActionManager().removeAllActionsFromTarget(this.node , true);
         this._lbScore.unscheduleAllCallbacks();
         this._lbLife.unscheduleAllCallbacks();
