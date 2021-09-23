@@ -19,16 +19,16 @@
     link.type = "text/css";
     link.rel = "stylesheet";
   if (navigator.userAgent.match(/iPad/) == null && navigator.userAgent.match(/iPhone|Mobile|UP.Browser|Android|BlackBerry|Windows CE|Nokia|webOS|Opera Mini|SonyEricsson|opera mobi|Windows Phone|IEMobile|POLARIS/) != null){
-    link.href = "style-mobile.25fc5.css";
+    link.href = "style-mobile.css";
   }
   else {
-    link.href = "style-desktop.81ede.css";
+    link.href = "style-desktop.css";
   }
   document.getElementsByTagName( "head" )[0].appendChild( link );
 </script>
 
 
-  <link rel="icon" href="favicon.8de18.ico"/>
+  <link rel="icon" href="favicon.ico"/>
 </head>
 <body>
 <h1 class="header">PunchAction LAVUMIZZANG</h1>
@@ -66,8 +66,8 @@ document.getElementsByTagName( "head" )[0].appendChild( link );
 </script>
 
 
-<script src="src/settings.725dd.js" charset="utf-8"></script>
-<script src="main.c489a.js" charset="utf-8"></script>
+<script src="src/settings.js" charset="utf-8"></script>
+<script src="main.js" charset="utf-8"></script>
 
 <script type="text/javascript">
 (function () {
@@ -93,9 +93,9 @@ document.getElementsByTagName( "head" )[0].appendChild( link );
       document.body.appendChild(domScript);
     }
 
-    loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.f8961.js', function () {
+    loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.js', function () {
       if (CC_PHYSICS_BUILTIN || CC_PHYSICS_CANNON) {
-        loadScript(debug ? 'physics.js' : 'physics-min.b5fcb.js', window.boot);
+        loadScript(debug ? 'physics.js' : 'physics-min.js', window.boot);
       }
       else {
         window.boot();

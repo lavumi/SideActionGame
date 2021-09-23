@@ -1,5 +1,6 @@
 
 const {ccclass, property} = cc._decorator;
+import GameManager from "./GameManager"
 
 @ccclass
 export default class InputManager extends cc.Component {
@@ -11,17 +12,32 @@ export default class InputManager extends cc.Component {
     _pressB : boolean = false;
 
 
-    gameMamager : any = null!;
+    gameMamager : GameManager = null!;
 
+
+    _leftPanel : cc.Node = null!;
+    _rightPanel : cc.Node = null!;
 
     onLoad () {
 
         this.gameMamager = this.getComponent("GameManager");
+
+        this._leftPanel = cc.find("InputPanelLeft");
+        this._rightPanel = cc.find("InputPanelRight");
+
+
+
+
     }
 
     start () {
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+
+
+            cc.log("init event "); 
+            this._leftPanel.on('click' , this.gameMamager.leftAction , this.gameMamager );
+            this._rightPanel.on('click' , this.gameMamager.rightAction , this.gameMamager);
     }
 
     onDestroy() {

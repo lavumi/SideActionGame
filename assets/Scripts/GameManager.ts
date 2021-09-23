@@ -183,6 +183,7 @@ export default class GameManager extends cc.Component {
     }
 
     leftAction(){
+        cc.log("left action");
         if ( this._blockInputMovement === true  || this._blockInputFeverFinish === true ) return;
 
         if ( this._monsterDirectionArray[0] === DIRECTION.LEFT  || this._feverMode ){
@@ -195,6 +196,7 @@ export default class GameManager extends cc.Component {
     }
 
     rightAction(){
+        cc.log("right action");
         if ( this._blockInputMovement === true  || this._blockInputFeverFinish === true ) return;
 
         if ( this._monsterDirectionArray[0] === DIRECTION.RIGHT || this._feverMode ){
