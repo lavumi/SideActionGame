@@ -12,6 +12,13 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Monster extends cc.Component {
 
+    colorArr: cc.Color[] = [
+        cc.color(255,251,171),
+        cc.color(171,251,255),
+        cc.color(255,171,255),
+    ];
+
+
     health : number = 1;
 
     lbHealth : cc.Label = null!;
@@ -22,14 +29,18 @@ export default class Monster extends cc.Component {
 
     gameManager : GameManager = null!;
 
+    _animation : cc.Animation = null!;
+
     onLoad(){
         this._atkTimer = cc.find('atkTimer', this.node).getComponent(cc.ProgressBar);
         this._atkTimer.node.active = false;
 
         this.gameManager = cc.find("GameManager").getComponent(GameManager);
+
     }
 
     init( isLeft : boolean  , difficulty : number){
+        this._animation = this.getComponent(cc.Animation);
 
         let rnd = difficulty === 0 ? 2 : 3;
         let health = Math.floor(Math.random() * rnd ) + 1;
@@ -46,28 +57,28 @@ export default class Monster extends cc.Component {
 
 
         if ( health === 1 ){
-            this.node.color = cc.Color.RED;
-            this.hp[0].color = cc.Color.RED;
-            this.hp[1].color = cc.Color.RED;
-            this.hp[2].color = cc.Color.RED;
+            this.node.color     = this.colorArr[0];
+            this.hp[0].color    = this.colorArr[0];
+            this.hp[1].color    = this.colorArr[0];
+            this.hp[2].color    = this.colorArr[0];
             this.hp[0].active = true;
             this.hp[1].active = false;
             this.hp[2].active = false;
         }
         else if ( health === 2 ){
-            this.node.color = cc.Color.GREEN;
-            this.hp[0].color = cc.Color.GREEN;
-            this.hp[1].color = cc.Color.GREEN;
-            this.hp[2].color = cc.Color.GREEN;
+            this.node.color     = this.colorArr[1];
+            this.hp[0].color    = this.colorArr[1];
+            this.hp[1].color    = this.colorArr[1];
+            this.hp[2].color    = this.colorArr[1];
             this.hp[0].active = true;
             this.hp[1].active = true;
             this.hp[2].active = false;
         }
         else if ( health === 3 ){
-            this.node.color = cc.Color.BLUE;
-            this.hp[0].color = cc.Color.BLUE;
-            this.hp[1].color = cc.Color.BLUE;
-            this.hp[2].color = cc.Color.BLUE;
+            this.node.color     = this.colorArr[2];
+            this.hp[0].color    = this.colorArr[2];
+            this.hp[1].color    = this.colorArr[2];
+            this.hp[2].color    = this.colorArr[2];
             this.hp[0].active = true;
             this.hp[1].active = true;
             this.hp[2].active = true;
@@ -89,7 +100,7 @@ export default class Monster extends cc.Component {
         this.lbHealth.string = this.health + "";
 
 
-
+        this._animation.play('monsterIdle');
     }
 
 
@@ -100,7 +111,7 @@ export default class Monster extends cc.Component {
 
         this._atkTimerCur = this._atkTimerBase;
 
-
+        this._animation.play('monsterDamage');
         if ( this.health === 0  || onePunch ){
             this.dieAnimation();
             return true;
@@ -112,6 +123,7 @@ export default class Monster extends cc.Component {
 
 
     dieAnimation(){
+        this._animation.play('monsterDead');
         cc.tween( this.node )
         .to( 0.1 , { opacity : 0 , position : cc.v2( this.node.x , 100) })
         .removeSelf()

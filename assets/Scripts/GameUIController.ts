@@ -59,7 +59,7 @@ export default class GameUIController extends cc.Component {
         this._lbReady.active         = false;
         this._feverGauge.node.active = true;
 
-        this._btnMain.on('click', this._gameManager.showMain , this._gameManager );
+        // this._btnMain.on('click', this._gameManager.showMain , this._gameManager );
 
     }
 
@@ -157,6 +157,6 @@ export default class GameUIController extends cc.Component {
             this._lbCombo.node.parent.active = true;
         }
 
-        this._lbCombo.string = count + " Combo";
+        this._lbCombo.string = count + "\nCombo";
     }
 }
