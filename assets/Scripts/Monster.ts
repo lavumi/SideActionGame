@@ -21,7 +21,6 @@ export default class Monster extends cc.Component {
 
     health : number = 1;
 
-    lbHealth : cc.Label = null!;
     hp : cc.Node[] = [];
 
     _atkTimer : cc.ProgressBar = null!;
@@ -29,18 +28,21 @@ export default class Monster extends cc.Component {
 
     gameManager : GameManager = null!;
 
+    _characterNode : cc.Node = null!;
     _animation : cc.Animation = null!;
 
     onLoad(){
         this._atkTimer = cc.find('atkTimer', this.node).getComponent(cc.ProgressBar);
         this._atkTimer.node.active = false;
 
+
+        this._characterNode = cc.find("CharacterNode", this.node );
         this.gameManager = cc.find("GameManager").getComponent(GameManager);
 
     }
 
     init( isLeft : boolean  , difficulty : number){
-        this._animation = this.getComponent(cc.Animation);
+        this._animation = this._characterNode.getComponent(cc.Animation);
 
         let rnd = difficulty === 0 ? 2 : 3;
         let health = Math.floor(Math.random() * rnd ) + 1;
@@ -51,13 +53,14 @@ export default class Monster extends cc.Component {
         }
 
 
-        this.hp.push( this.node.children[1]);
-        this.hp.push( this.node.children[2]);
-        this.hp.push( this.node.children[3]);
+        let healthContainer = cc.find("HealthContainer" , this.node );
 
+        this.hp.push( healthContainer.children[0]);
+        this.hp.push( healthContainer.children[1]);
+        this.hp.push( healthContainer.children[2]);
 
         if ( health === 1 ){
-            this.node.color     = this.colorArr[0];
+            this._characterNode.color     = this.colorArr[0];
             this.hp[0].color    = this.colorArr[0];
             this.hp[1].color    = this.colorArr[0];
             this.hp[2].color    = this.colorArr[0];
@@ -66,7 +69,7 @@ export default class Monster extends cc.Component {
             this.hp[2].active = false;
         }
         else if ( health === 2 ){
-            this.node.color     = this.colorArr[1];
+            this._characterNode.color     = this.colorArr[1];
             this.hp[0].color    = this.colorArr[1];
             this.hp[1].color    = this.colorArr[1];
             this.hp[2].color    = this.colorArr[1];
@@ -75,7 +78,7 @@ export default class Monster extends cc.Component {
             this.hp[2].active = false;
         }
         else if ( health === 3 ){
-            this.node.color     = this.colorArr[2];
+            this._characterNode.color     = this.colorArr[2];
             this.hp[0].color    = this.colorArr[2];
             this.hp[1].color    = this.colorArr[2];
             this.hp[2].color    = this.colorArr[2];
@@ -96,8 +99,6 @@ export default class Monster extends cc.Component {
 
         this.health = health;
 
-        this.lbHealth = cc.find( "lbHealth" , this.node ).getComponent(cc.Label);
-        this.lbHealth.string = this.health + "";
 
 
         this._animation.play('monsterIdle');
@@ -106,7 +107,6 @@ export default class Monster extends cc.Component {
 
     damaged( onePunch : boolean ) : boolean {
         this.health--;
-        this.lbHealth.string = this.health + "";
         this.hp[this.health].active = false;
 
         this._atkTimerCur = this._atkTimerBase;

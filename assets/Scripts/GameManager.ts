@@ -34,6 +34,9 @@ export default class GameManager extends cc.Component {
     _scoreUI : ScoreUIController = null!;
 
 
+    _monsterDistance : number = 64;
+
+
     //InGame Value
     _difficulty : number = 0;
     _score = 0;
@@ -158,7 +161,7 @@ export default class GameManager extends cc.Component {
 
 
     resetGame(){
-        this._difficulty = 0;
+        // this._difficulty = 0;
         this._score = 0;
         this._fever = 0;
         this._timeCount = 30;
@@ -231,7 +234,7 @@ export default class GameManager extends cc.Component {
 
         this._blockInputMovement = true;
         for( let i = 0 ; i < this._monsterDirectionArray.length ; i ++ ){
-            let targetPos = cc.v2((i + 1) * 100 *  this._monsterDirectionArray[i] , 0);
+            let targetPos = cc.v2((i + 1) * this._monsterDistance *  this._monsterDirectionArray[i] , 0);
             cc.tween( this._monsterArr[i].node )
             .to( 0.1 , { position : targetPos})
             .start();
@@ -254,8 +257,8 @@ export default class GameManager extends cc.Component {
         let monster = cc.instantiate(this.monsterPrefab);
 
 
-        let moveTargetPos = cc.v2(index  * 100 *  pos , 0 );
-        monster.setPosition( 5 * 100 *  pos , 0 );
+        let moveTargetPos = cc.v2(index  * this._monsterDistance *  pos , 0 );
+        monster.setPosition( this._monsterDistance * 6 *  pos , 0 );
 
         cc.tween( monster )
         .to( 0.3 , {position : moveTargetPos} )
