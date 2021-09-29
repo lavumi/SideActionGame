@@ -49,7 +49,7 @@ export default class GameManager extends cc.Component {
     _insaneTimer = 0.2;
     _feverMode : boolean = false;
 
-    _blockInputMovement : boolean = true;
+    _blockInput : boolean = true;
     _blockInputFeverFinish : boolean = true;
 
 
@@ -153,7 +153,7 @@ export default class GameManager extends cc.Component {
         let countDown = 1;
         this._gameUI.startCountDown( countDown  , ()=>{
             this.setInsaneTimer();
-            this._blockInputMovement = false;
+            this._blockInput = false;
             this._blockInputFeverFinish = false;
             this.schedule( this._updateTimeCount , 1 );
         });
@@ -187,7 +187,7 @@ export default class GameManager extends cc.Component {
 
     leftAction(){
         cc.log("left action");
-        if ( this._blockInputMovement === true  || this._blockInputFeverFinish === true ) return;
+        if ( this._blockInput === true  || this._blockInputFeverFinish === true ) return;
 
         if ( this._monsterDirectionArray[0] === DIRECTION.LEFT  || this._feverMode ){
             this.player.leftAction();
@@ -200,7 +200,7 @@ export default class GameManager extends cc.Component {
 
     rightAction(){
         cc.log("right action");
-        if ( this._blockInputMovement === true  || this._blockInputFeverFinish === true ) return;
+        if ( this._blockInput === true  || this._blockInputFeverFinish === true ) return;
 
         if ( this._monsterDirectionArray[0] === DIRECTION.RIGHT || this._feverMode ){
             this.player.rightAction();
@@ -232,7 +232,14 @@ export default class GameManager extends cc.Component {
 
     moveToCenter(){
 
-        this._blockInputMovement = true;
+        //입력을 input manager에서 막게 하자
+        // this._blockInput = true;
+        // cc.tween( this.node )
+        // .delay(0.1)
+        // .call(()=>{ this._blockInput = false; })
+        // .start();
+
+
         for( let i = 0 ; i < this._monsterDirectionArray.length ; i ++ ){
             let targetPos = cc.v2((i + 1) * this._monsterDistance *  this._monsterDirectionArray[i] , 0);
             cc.tween( this._monsterArr[i].node )
@@ -240,10 +247,7 @@ export default class GameManager extends cc.Component {
             .start();
         }
 
-        cc.tween( this.node )
-        .delay(0.1)
-        .call(()=>{ this._blockInputMovement = false; })
-        .start();
+
     }
 
     makeNewMonster(){
@@ -308,7 +312,6 @@ export default class GameManager extends cc.Component {
 
 
     playerDamaged(){
-
         this._health--;
         if ( this._health <= 0 ){
             this.gameOver();
@@ -319,13 +322,12 @@ export default class GameManager extends cc.Component {
 
         this._comboCount = 0;
         this._gameUI.updateCombo(       this._comboCount );
-
     }
 
 
     gameOver(){
         this._blockInputFeverFinish = true;
-        this._blockInputMovement = true;
+        this._blockInput = true;
         this._monsterArr[0].pauseTimer();
         this._gameUI.gameOver();
         this.unschedule( this._updateTimeCount );

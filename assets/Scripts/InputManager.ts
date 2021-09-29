@@ -18,6 +18,9 @@ export default class InputManager extends cc.Component {
     _leftPanel : cc.Node = null!;
     _rightPanel : cc.Node = null!;
 
+    _inputDelay : number = 0.1;
+    _blockInput : boolean = false;
+
     onLoad () {
 
         this.gameMamager = this.getComponent("GameManager");
@@ -26,7 +29,11 @@ export default class InputManager extends cc.Component {
         this._rightPanel = cc.find("InputPanelRight");
 
 
-
+        // this._blockInput = true;
+        // cc.tween( this.node )
+        // .delay(0.1)
+        // .call(()=>{ this._blockInput = false; })
+        // .start();
 
     }
 
@@ -53,14 +60,19 @@ export default class InputManager extends cc.Component {
                     this.gameMamager.leftAction();
                 }
                 this._pressA = true;
+                this.blockInput();
+                
                 break;
             case cc.macro.KEY.right:
                 if ( this._pressB === false ){
                     this.gameMamager.rightAction();
                 }
                 this._pressB = true;
+                this.blockInput();
                 break;
         }
+
+        
     }
 
     onKeyUp (event : cc.Event.EventKeyboard) {
@@ -73,6 +85,15 @@ export default class InputManager extends cc.Component {
                 break;
         }
 
+    }
+
+
+    blockInput(){
+        this._blockInput = true;
+        cc.tween( this.node )
+        .delay(this._inputDelay)
+        .call(()=>{ this._blockInput = false; })
+        .start();
     }
 
 }
