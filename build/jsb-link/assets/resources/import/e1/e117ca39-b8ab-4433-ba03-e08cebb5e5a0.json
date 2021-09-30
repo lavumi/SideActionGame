@@ -1,0 +1,12 @@
+{
+  "__type__": "cc.Material",
+  "_name": "planeColor",
+  "_effectAsset": {
+    "__uuid__": "2aldi0eDVHJKWlN2zgW7+B"
+  },
+  "_techniqueData": {
+    "0": {
+      "defines": {}
+    }
+  }
+}

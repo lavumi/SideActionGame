@@ -1,0 +1,44 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "characterIdle",
+  "_duration": 0.6833333333333333,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "7fomsqUjlMWrqd+TLFBXWc"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "c3J4mI/KtIhYMGe8SKlR2V"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "0fdn3rZw5IzrubDJWvFhxF"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "58bdXaHMtLNbTcRtJvfsH1"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "c6fW7nU6BEQKngIjyICvP+"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
