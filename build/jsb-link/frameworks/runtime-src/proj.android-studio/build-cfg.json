@@ -1,8 +1,0 @@
-{
-    "ndk_module_path" :[
-        "/Users/lavumi/Flysher/nopickles/engine-native",
-        "/Users/lavumi/Flysher/nopickles/engine-native/cocos",
-        "/Users/lavumi/Flysher/nopickles/engine-native/external"
-    ],
-    "copy_resources": []
-}
