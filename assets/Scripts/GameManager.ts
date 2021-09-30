@@ -5,6 +5,17 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+
+
+
+declare global {
+    interface Window {
+        actionIntervalTestValue : number
+    }
+  }
+
+
+
 import GameUIController from "./GameUIController";
 import ScoreUIController from "./ScoreUIController"
 import Monster from "./Monster";
@@ -24,6 +35,7 @@ export default class GameManager extends cc.Component {
     gameRestartDelay = 1;
 
 
+    actionInterval : number = 0.1;
 
 
 
@@ -125,6 +137,16 @@ export default class GameManager extends cc.Component {
 
     startGame( diff : number ){
 
+
+
+
+
+
+        let actioninterval = Number(window.actionIntervalTestValue);
+        cc.log( this.actionInterval , actioninterval);
+        if ( this.actionInterval !== actioninterval && isNaN( actioninterval) === false ){
+            this.actionInterval = actioninterval;
+        }
 
         this._gameUI.node.active = true;
         this._menuUI.active = false;
@@ -232,18 +254,10 @@ export default class GameManager extends cc.Component {
 
     moveToCenter(){
 
-        //입력을 input manager에서 막게 하자
-        // this._blockInput = true;
-        // cc.tween( this.node )
-        // .delay(0.1)
-        // .call(()=>{ this._blockInput = false; })
-        // .start();
-
-
         for( let i = 0 ; i < this._monsterDirectionArray.length ; i ++ ){
             let targetPos = cc.v2((i + 1) * this._monsterDistance *  this._monsterDirectionArray[i] , 0);
             cc.tween( this._monsterArr[i].node )
-            .to( 0.1 , { position : targetPos})
+            .to( this.actionInterval , { position : targetPos})
             .start();
         }
 

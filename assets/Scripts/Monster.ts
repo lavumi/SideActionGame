@@ -125,7 +125,7 @@ export default class Monster extends cc.Component {
     dieAnimation(){
         this._animation.play('monsterDead');
         cc.tween( this.node )
-        .to( 0.1 , { opacity : 0 , position : cc.v2( this.node.x , 100) })
+        .to( this.gameManager.actionInterval , { opacity : 0 , position : cc.v2( this.node.x , 100) })
         .removeSelf()
         .start();
         // this.node.removeFromParent();

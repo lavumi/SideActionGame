@@ -39,7 +39,23 @@
       <span style="width: 0%"></span>
     </div>
   </div>
+  <!-- TEST DEBUG OPTIONS-->
+  <table border="0">
+    <tr>
+        <td>ActionInterval <input id="ActionInterval" type="number"  value="0.1"size="0.01"  min="0.1" max="1"></td>
+    </tr>
+    <tr>
+      <td><button  onclick="button1_click();">APPLY</button></td>
+    </tr>
+    <script>
+      function button1_click(){
+        window.actionIntervalTestValue = document.getElementById("ActionInterval").value;
+      }
 
+    </script>
+
+  </table>
+    <!--ENDTEST-->
 
 <script>
 if (navigator.userAgent.match(/iPad/) == null && navigator.userAgent.match(/iPhone|Mobile|UP.Browser|Android|BlackBerry|Windows CE|Nokia|webOS|Opera Mini|SonyEricsson|opera mobi|Windows Phone|IEMobile|POLARIS/) != null){
