@@ -20,6 +20,7 @@ import GameUIController from "./GameUIController";
 import ScoreUIController from "./ScoreUIController"
 import Monster from "./Monster";
 import Player from "./Player";
+import SoundController from "./SoundController";
 const {ccclass, property} = cc._decorator;
 
 
@@ -30,6 +31,10 @@ enum DIRECTION {
 }
 @ccclass
 export default class GameManager extends cc.Component {
+
+
+    _soundController : SoundController = null!;
+
 
     feverFinishDelay = 0.3;
     gameRestartDelay = 1;
@@ -86,7 +91,7 @@ export default class GameManager extends cc.Component {
         this._gameUI = cc.find("GameUI").getComponent(GameUIController);
         this._scoreUI = cc.find("ScoreUI").getComponent(ScoreUIController);
 
-
+        this._soundController = cc.find("SoundController").getComponent(SoundController);
 
     }
 
@@ -119,6 +124,7 @@ export default class GameManager extends cc.Component {
         this._gameUI.node.active = false;
         this._menuUI.active = true;
         this._scoreUI.node.active = false;
+        this._soundController.playMusic(0, true);
     }
 
     showResult(){
@@ -131,19 +137,16 @@ export default class GameManager extends cc.Component {
     restartGame(){
         this.resetGame();
         this.startGame( this._difficulty );
+
     }
 
 
 
     startGame( diff : number ){
-
-
-
-
+        this._soundController.playMusic(1 , true);
 
 
         let actioninterval = Number(window.actionIntervalTestValue);
-        cc.log( this.actionInterval , actioninterval);
         if ( this.actionInterval !== actioninterval && isNaN( actioninterval) === false ){
             this.actionInterval = actioninterval;
         }
@@ -208,7 +211,6 @@ export default class GameManager extends cc.Component {
     }
 
     leftAction(){
-        cc.log("left action");
         if ( this._blockInput === true  || this._blockInputFeverFinish === true ) return;
 
         if ( this._monsterDirectionArray[0] === DIRECTION.LEFT  || this._feverMode ){
@@ -221,7 +223,6 @@ export default class GameManager extends cc.Component {
     }
 
     rightAction(){
-        cc.log("right action");
         if ( this._blockInput === true  || this._blockInputFeverFinish === true ) return;
 
         if ( this._monsterDirectionArray[0] === DIRECTION.RIGHT || this._feverMode ){
@@ -235,7 +236,8 @@ export default class GameManager extends cc.Component {
 
 
     attackMonster(){
-        cc.log("attack monster " + this._feverMode );
+        let atkEffectRnd = Math.floor(Math.random() * 6);
+        this._soundController.playEffect(atkEffectRnd + 2);
         if ( this._monsterArr.length === 0 ) return; 
 
         if ( this._monsterArr[0].damaged( this._feverMode )  ){
@@ -326,6 +328,7 @@ export default class GameManager extends cc.Component {
 
 
     playerDamaged(){
+        this._soundController.playEffect(2);
         this._health--;
         if ( this._health <= 0 ){
             this.gameOver();

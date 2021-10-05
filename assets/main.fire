@@ -33,6 +33,9 @@
       },
       {
         "__id__": 94
+      },
+      {
+        "__id__": 122
       }
     ],
     "_active": false,
@@ -5545,5 +5548,106 @@
       "__id__": 94
     },
     "_id": "eabWBllXpLhLrgMKNDDAkO"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "SoundController",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 123
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": "bbS7KSAxxHooayqOPwOsC7"
+  },
+  {
+    "__type__": "4f319vcB+hEpoGCnjNf0dD4",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 122
+    },
+    "_enabled": true,
+    "audioClipArray": [
+      {
+        "__uuid__": "36db4b98-6786-491a-bb9b-ae2bcbdba14c"
+      },
+      {
+        "__uuid__": "967f28dd-adae-49c1-9fdc-9198ad9dfee8"
+      },
+      {
+        "__uuid__": "f03ccc06-ea49-488b-9bd2-66a0ec95a64c"
+      },
+      {
+        "__uuid__": "0c2b8475-f660-4d57-a4fa-e7de58ecb15d"
+      },
+      {
+        "__uuid__": "9bdf5381-0396-47cb-9b8d-fb4176f16dd7"
+      },
+      {
+        "__uuid__": "13c8f74e-3882-4b2d-808b-48dd089a8911"
+      },
+      {
+        "__uuid__": "3d96ed96-0d65-417f-94e2-94b676aed8f4"
+      },
+      {
+        "__uuid__": "4bd351e0-9fdf-47d3-bf13-dba47217acaf"
+      },
+      {
+        "__uuid__": "e7e0980a-6e4d-49e6-b624-43f53b51ed74"
+      }
+    ],
+    "_id": "08USqj/i5HapbFI1vDP1D3"
   }
 ]
