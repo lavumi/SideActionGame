@@ -29,7 +29,7 @@ export default class NewClass extends cc.Component {
 
     _score : number = 0;
     _combo : number = 0;
-    _life : number = 0;
+    // _life : number = 0;
 
     onLoad(){
 
@@ -58,11 +58,11 @@ export default class NewClass extends cc.Component {
     }
 
 
-    showResult( score : number , combo : number , life : number ){
+    showResult( score : number , combo : number){
 
         this._score = score;
         this._combo = combo;
-        this._life = life;
+        // this._life = life;
 
         this._lbScore.string = "";
         this._lbCombo.string = "";
@@ -80,11 +80,11 @@ export default class NewClass extends cc.Component {
             this._labelCounting( this._lbTotal , score ,  score + combo  );
         })
         .delay(this._countingTime + 0.5)
-        .call( ()=>{
-            this._labelCounting( this._lbLife , 0 , life );
-            this._labelCounting( this._lbTotal , score + combo  , score + combo + life );
-        })
-        .delay(this._countingTime + 0.5)
+        // .call( ()=>{
+        //     this._labelCounting( this._lbLife , 0 , life );
+        //     this._labelCounting( this._lbTotal , score + combo  , score + combo + life );
+        // })
+        // .delay(this._countingTime + 0.5)
         .call(()=>{
             this._showRetry();
         })
@@ -117,9 +117,9 @@ export default class NewClass extends cc.Component {
 
         this._lbScore.string = this._score.toString();
         this._lbCombo.string = this._combo.toString();
-        this._lbLife.string = this._life.toString();
+        // this._lbLife.string = this._life.toString();
 
-        this._lbTotal.string = ( this._score + this._combo + this._life ).toString();
+        this._lbTotal.string = ( this._score + this._combo ).toString();
         this._showRetry();
     }
 

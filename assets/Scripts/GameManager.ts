@@ -61,7 +61,8 @@ export default class GameManager extends cc.Component {
     _comboCount : number= 0;
     _maxCombo : number = 0;
     _timeCount : number = 30;
-    _health = 3;
+    _maxTimeCount : number = 30;
+    // _health = 3;
     _feverPerScore = 99;
     _insaneTimer = 0.2;
     _feverMode : boolean = false;
@@ -131,7 +132,7 @@ export default class GameManager extends cc.Component {
         this._gameUI.node.active = false;
         this._menuUI.active = false;
         this._scoreUI.node.active = true;
-        this._scoreUI.showResult(this._score, this._maxCombo , this._health * 100);
+        this._scoreUI.showResult(this._score, this._maxCombo );
     }
 
     restartGame(){
@@ -161,9 +162,9 @@ export default class GameManager extends cc.Component {
 
 
         this._gameUI.initializeGame();
-        this._gameUI.updateHealth(      this._health );
+        // this._gameUI.updateHealth(      this._health );
         this._gameUI.updateFever(       this._fever);
-        this._gameUI.updateRemainTime(  this._timeCount);
+        this._gameUI.updateRemainTime(  this._timeCount / this._maxTimeCount);
         this._gameUI.updateScore(       this._score );
         this._gameUI.updateCombo(       this._comboCount );
 
@@ -180,7 +181,7 @@ export default class GameManager extends cc.Component {
             this.setInsaneTimer();
             this._blockInput = false;
             this._blockInputFeverFinish = false;
-            this.schedule( this._updateTimeCount , 1 );
+            this.schedule( this._updateTimeCount  );
         });
     }
 
@@ -189,8 +190,8 @@ export default class GameManager extends cc.Component {
         // this._difficulty = 0;
         this._score = 0;
         this._fever = 0;
-        this._timeCount = 30;
-        this._health = 3;
+        this._timeCount = this._maxTimeCount;
+        // this._health = 3;
         this._feverPerScore = 10;
         this._comboCount = 0;
         this._maxCombo = 0;
@@ -202,10 +203,11 @@ export default class GameManager extends cc.Component {
         this._monsterArr.length = 0;
     }
 
-    _updateTimeCount(){
-        this._timeCount--;
-        this._gameUI.updateRemainTime( this._timeCount );
-        if ( this._timeCount === 0 ){
+    _updateTimeCount(dt : number ){
+        // this._timeCount--;
+        this._timeCount -= dt;
+        this._gameUI.updateRemainTime( this._timeCount / this._maxTimeCount );
+        if ( this._timeCount <= 0 ){
             this.gameOver();
         }
     }
@@ -319,23 +321,17 @@ export default class GameManager extends cc.Component {
         this.unschedule( this._updateTimeCount );
 
         // this._timeCount--;
-        this._updateTimeCount();
+        // this._updateTimeCount();
 
         this.schedule( this._updateFever  );
-        cc.log("fever start ");
     }
 
 
 
     playerDamaged(){
         this._soundController.playEffect(2);
-        this._health--;
-        if ( this._health <= 0 ){
-            this.gameOver();
-        }
 
-        this._gameUI.updateHealth( this._health );
-
+        this._timeCount -= 5;
 
         this._comboCount = 0;
         this._gameUI.updateCombo(       this._comboCount );
@@ -349,8 +345,6 @@ export default class GameManager extends cc.Component {
         this._gameUI.gameOver();
         this.unschedule( this._updateTimeCount );
         this.unschedule( this._updateFever );
-
-
         setTimeout( ()=>{
             this.showResult();
         } , 1500 );
@@ -398,7 +392,7 @@ export default class GameManager extends cc.Component {
         })
         .delay( this.gameRestartDelay )
         .call( ()=>{
-            this.schedule( this._updateTimeCount , 1 );
+            this.schedule( this._updateTimeCount );
             this._blockInputFeverFinish = false;
         })
         .start();
