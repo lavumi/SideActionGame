@@ -65,8 +65,8 @@ export default class Player extends cc.Component {
     }
 
     onAnimFinishedCallback(){
-        this._actionTimeout = setTimeout( ()=>{
-            this._animation.play( this._animationName[0] );
+        this._animation.play( this._animationName[0] );
+        this.scheduleOnce( ()=>{
             this._currentAtkAnim = 1;
             this._actionTimeout = -1;
         } , (this._gameManager.actionInterval ) * 1000);

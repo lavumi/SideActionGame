@@ -3,8 +3,8 @@
   "_name": "character_attack_03",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.4,
-  "sample": 10,
+  "_duration": 0.2,
+  "sample": 20,
   "speed": 1,
   "wrapMode": 1,
   "curveData": {
@@ -18,19 +18,19 @@
             }
           },
           {
-            "frame": 0.1,
+            "frame": 0.05,
             "value": {
               "__uuid__": "1aa1efbf-4884-465a-aee5-2e46c3017029"
             }
           },
           {
-            "frame": 0.2,
+            "frame": 0.1,
             "value": {
               "__uuid__": "a3db9d87-ffe9-476e-b370-16aa8f63167a"
             }
           },
           {
-            "frame": 0.3,
+            "frame": 0.15,
             "value": {
               "__uuid__": "3c95d432-7a97-4261-8137-6acdc7b40db0"
             }
@@ -50,19 +50,19 @@
                 }
               },
               {
-                "frame": 0.1,
+                "frame": 0.05,
                 "value": {
                   "__uuid__": "2c9ff9ff-2cba-4518-b24b-7c589502e180"
                 }
               },
               {
-                "frame": 0.2,
+                "frame": 0.1,
                 "value": {
                   "__uuid__": "0627df0b-2261-4a03-a4e8-f6d7cba9aa01"
                 }
               },
               {
-                "frame": 0.3,
+                "frame": 0.15,
                 "value": {
                   "__uuid__": "048848eb-6a57-43f7-8130-8e1bbc64cb1e"
                 }

@@ -176,7 +176,7 @@ export default class GameManager extends cc.Component {
 
         let countDown = 1;
         this._gameUI.startCountDown( countDown  , ()=>{
-            this.setInsaneTimer();
+            // this.setInsaneTimer();
             this._blockInput = false;
             this._blockInputFeverFinish = false;
             this.schedule( this._updateTimeCount  );
