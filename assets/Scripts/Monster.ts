@@ -140,9 +140,11 @@ export default class Monster extends cc.Component {
 
         this._animation.play('monsterDead');
 
-        let targetX = 300;
+        let rnd = Math.random() * 300 + 200;
+
+        let targetX = rnd;
         if ( this.node.x < 0 ){
-            targetX = -300;
+            targetX = rnd * -1;
         }
         let targetPosition= cc.v2( targetX , 300);
         cc.tween( this.node )
