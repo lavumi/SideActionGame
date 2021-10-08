@@ -99,7 +99,7 @@ export default class Monster extends cc.Component {
         }
 
         if ( difficulty >= 3 ){
-            this._atkTimer.node.active =true;
+            // this._atkTimer.node.active =true;
         }
 
         this.health = health;
@@ -136,7 +136,7 @@ export default class Monster extends cc.Component {
 
     dieAnimation(){
         cc.find("HealthContainer" , this.node ).active = false;
-
+        this._atkTimer.node.active = false;
 
         this._animation.play('monsterDead');
 
