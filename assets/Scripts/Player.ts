@@ -73,22 +73,15 @@ export default class Player extends cc.Component {
     }
 
     damaged( dirLeft : boolean ){
-        if ( dirLeft )
-            this.node.scaleX = this._baseScale ;
-        else 
-            this.node.scaleX = this._baseScale* -1;
-
-        let animState = this._animation.play(this._animationName[ this._currentAtkAnim ] );
-        animState.speed = 0.1 / this._gameManager.actionInterval ;
-        this._currentAtkAnim = 1;
 
         setTimeout( ()=>{
             if ( dirLeft )
                 this.node.scaleX = this._baseScale * -1;
             else 
                 this.node.scaleX = this._baseScale;
-            animState = this._animation.play(this._animationName[ 4] );
-        } , 200);
+            let animState = this._animation.play(this._animationName[ 4] );
+            this._currentAtkAnim = 1;
+        } , 150);
 
     }
 }

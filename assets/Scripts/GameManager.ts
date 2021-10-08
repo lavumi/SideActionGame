@@ -226,6 +226,7 @@ export default class GameManager extends cc.Component {
             this.attackMonster();
         }
         else {
+            this.player.leftAction();
             this.playerDamaged();
         }
     }
@@ -246,6 +247,7 @@ export default class GameManager extends cc.Component {
             this.attackMonster();
         }
         else {
+            this.player.rightAction();
             this.playerDamaged();
         }
     }
