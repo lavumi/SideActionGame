@@ -410,6 +410,7 @@ export default class GameManager extends cc.Component {
         .call( ()=>{
             this.schedule( this._updateTimeCount );
             this._blockInputFeverFinish = false;
+            this.setInsaneTimer();
         })
         .start();
     }
