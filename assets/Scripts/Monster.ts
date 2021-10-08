@@ -39,10 +39,15 @@ export default class Monster extends cc.Component {
         this._characterNode = cc.find("CharacterNode", this.node );
         this.gameManager = cc.find("GameManager").getComponent(GameManager);
 
+
+        this._animation = this._characterNode.getComponent(cc.Animation);
+        this._animation.on( 'finished' , this.onAnimFinishedCallback, this);
+
+
     }
 
     init( isLeft : boolean  , difficulty : number){
-        this._animation = this._characterNode.getComponent(cc.Animation);
+
 
         let rnd = difficulty === 0 ? 2 : 3;
         let health = Math.floor(Math.random() * rnd ) + 1;
@@ -111,21 +116,37 @@ export default class Monster extends cc.Component {
 
         this._atkTimerCur = this._atkTimerBase;
 
-        this._animation.play('monsterDamage');
+
+
+
         if ( this.health === 0  || onePunch ){
-            this.dieAnimation();
+            if ( this.health === 0  || onePunch ){
+                this.dieAnimation();
+            }
             return true;
         }
         else {
+            setTimeout( ()=>{
+                this._animation.play('monsterDamage');
+            } , 100);
             return false;
         }
     }
 
 
     dieAnimation(){
+        cc.find("HealthContainer" , this.node ).active = false;
+
+
         this._animation.play('monsterDead');
+
+        let targetX = 300;
+        if ( this.node.x < 0 ){
+            targetX = -300;
+        }
+        let targetPosition= cc.v2( targetX , 300);
         cc.tween( this.node )
-        .to( this.gameManager.actionInterval , { opacity : 0 , position : cc.v2( this.node.x , 100) })
+        .to( 0.8 , { opacity : 0 , position : targetPosition , rotation : 1080})
         .removeSelf()
         .start();
         // this.node.removeFromParent();
@@ -157,5 +178,11 @@ export default class Monster extends cc.Component {
     pauseTimer(){
         this.unschedule( this._insaneModeTimer );
         // this._atkTimer.node.active = false;
+    }
+
+
+
+    onAnimFinishedCallback(){
+        this._animation.play( 'monsterIdle');
     }
 }

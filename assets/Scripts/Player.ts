@@ -23,7 +23,7 @@ export default class Player extends cc.Component {
 
     //테스트용 임시 변수
     _baseScale : number = 1;
-    _currentAtkAnim : number = 0;
+    _currentAtkAnim : number = 1;
 
 
     _gameManager : GameManager = null!;
@@ -50,31 +50,45 @@ export default class Player extends cc.Component {
     }
 
     _playAtkAnim(){
-        this._currentAtkAnim++;
-        if ( this._currentAtkAnim > 3 ){
-            this._currentAtkAnim = 1;
-        }
+
+
         clearTimeout(this._actionTimeout);
         this._actionTimeout = -1;
         let animState = this._animation.play(this._animationName[ this._currentAtkAnim ] );
         animState.speed = 0.1 / this._gameManager.actionInterval ;
+
+
+        this._currentAtkAnim++;
+        if ( this._currentAtkAnim > 3 ){
+            this._currentAtkAnim = 1;
+        }
     }
 
     onAnimFinishedCallback(){
         this._actionTimeout = setTimeout( ()=>{
             this._animation.play( this._animationName[0] );
-            this._currentAtkAnim = 0;
+            this._currentAtkAnim = 1;
             this._actionTimeout = -1;
         } , (this._gameManager.actionInterval ) * 1000);
     }
 
     damaged( dirLeft : boolean ){
-        if (dirLeft )
-            this.node.scaleX = this._baseScale * -1;
+        if ( dirLeft )
+            this.node.scaleX = this._baseScale ;
         else 
-            this.node.scaleX = this._baseScale;
+            this.node.scaleX = this._baseScale* -1;
 
+        let animState = this._animation.play(this._animationName[ this._currentAtkAnim ] );
+        animState.speed = 0.1 / this._gameManager.actionInterval ;
+        this._currentAtkAnim = 1;
 
-        let animState = this._animation.play(this._animationName[ 4] );
+        setTimeout( ()=>{
+            if ( dirLeft )
+                this.node.scaleX = this._baseScale * -1;
+            else 
+                this.node.scaleX = this._baseScale;
+            animState = this._animation.play(this._animationName[ 4] );
+        } , 200);
+
     }
 }
