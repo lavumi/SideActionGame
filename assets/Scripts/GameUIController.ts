@@ -44,14 +44,12 @@ export default class GameUIController extends cc.Component {
 
         this._gameUI            = this.node;
         this._lbScore           = cc.find("lbScore", this._gameUI).getComponent(cc.Label);
-        // this._lbTime            = cc.find("lbTime", this._gameUI).getComponent(cc.Label);
         this._lbGameOver        = cc.find("lbGameOver", this._gameUI);
         this._lbReady           = cc.find("lbReady", this._gameUI);
         this._lbGo              = cc.find("lbGo", this._gameUI);
         this._lbFever           = cc.find("lbFever", this._gameUI);
         this._feverGauge        = cc.find("feverGauge", this._gameUI).getComponent(cc.ProgressBar);
         this._progTime          = cc.find("gameTimer" , this._gameUI ).getComponent(cc.ProgressBar ); 
-        // this._heartContainer    = cc.find("heartContainer", this._gameUI);
         this._btnMain           = cc.find("lbGameOver/btnMain" , this._gameUI );
         this._lbFeverFinish     = cc.find("lbFeverFinish", this._gameUI);
         this._lbCombo           = cc.find("comboUI/lbCombo", this._gameUI).getComponent(cc.Label);
@@ -64,8 +62,6 @@ export default class GameUIController extends cc.Component {
         this._lbGo.active            = false;
         this._lbReady.active         = false;
         this._feverGauge.node.active = true;
-
-        // this._btnMain.on('click', this._gameManager.showMain , this._gameManager );
 
     }
 

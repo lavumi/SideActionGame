@@ -13,9 +13,9 @@ const {ccclass, property} = cc._decorator;
 export default class Monster extends cc.Component {
 
     colorArr: cc.Color[] = [
-        cc.color(255,251,171),
+        cc.color(255,255,255),
         cc.color(171,251,255),
-        cc.color(255,171,255),
+        cc.color(255,171,1),
     ];
 
 

@@ -71,9 +71,6 @@ export default class GameManager extends cc.Component {
     _blockInputFeverFinish : boolean = true;
 
 
-
-
-    @property(Player)
     player : Player = null!;
     @property(cc.Prefab)
     monsterPrefab : cc.Prefab = null!;
@@ -94,6 +91,7 @@ export default class GameManager extends cc.Component {
 
         this._soundController = cc.find("SoundController").getComponent(SoundController);
 
+        this.player = cc.find("Player" , this.node ).getComponent(Player);
     }
 
 
@@ -215,7 +213,15 @@ export default class GameManager extends cc.Component {
     leftAction(){
         if ( this._blockInput === true  || this._blockInputFeverFinish === true ) return;
 
-        if ( this._monsterDirectionArray[0] === DIRECTION.LEFT  || this._feverMode ){
+        if ( this._feverMode && this._monsterDirectionArray[0] === DIRECTION.LEFT){
+            this.player.leftAction();
+            this.attackMonster();
+        }
+        else if (this._feverMode && this._monsterDirectionArray[0] === DIRECTION.RIGHT){
+            this.player.rightAction();
+            this.attackMonster();
+        }
+        else if ( this._monsterDirectionArray[0] === DIRECTION.LEFT ){
             this.player.leftAction();
             this.attackMonster();
         }
@@ -227,7 +233,15 @@ export default class GameManager extends cc.Component {
     rightAction(){
         if ( this._blockInput === true  || this._blockInputFeverFinish === true ) return;
 
-        if ( this._monsterDirectionArray[0] === DIRECTION.RIGHT || this._feverMode ){
+        if ( this._feverMode && this._monsterDirectionArray[0] === DIRECTION.LEFT){
+            this.player.leftAction();
+            this.attackMonster();
+        }
+        else if (this._feverMode && this._monsterDirectionArray[0] === DIRECTION.RIGHT){
+            this.player.rightAction();
+            this.attackMonster();
+        }
+        else if ( this._monsterDirectionArray[0] === DIRECTION.RIGHT || this._feverMode ){
             this.player.rightAction();
             this.attackMonster();
         }
@@ -238,8 +252,8 @@ export default class GameManager extends cc.Component {
 
 
     attackMonster(){
-        let atkEffectRnd = Math.floor(Math.random() * 6);
-        this._soundController.playEffect(atkEffectRnd + 2);
+        // let atkEffectRnd = Math.floor(Math.random() * 6);
+        this._soundController.playEffect(1 + 2);
         if ( this._monsterArr.length === 0 ) return; 
 
         if ( this._monsterArr[0].damaged( this._feverMode )  ){
@@ -330,7 +344,7 @@ export default class GameManager extends cc.Component {
 
     playerDamaged(){
         this._soundController.playEffect(2);
-
+        this.player.damaged(this._monsterDirectionArray[0] === DIRECTION.LEFT);
         this._timeCount -= 5;
 
         this._comboCount = 0;

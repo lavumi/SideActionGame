@@ -14,14 +14,15 @@ export default class Player extends cc.Component {
 
     _animation : cc.Animation = null!
     _animationName : string[] = [
-        'characterIdle',
-        'characterAtk1',
-        'characterAtk2',
-        'characterAtk3'
+        'character_idle',
+        'character_attack_01',
+        'character_attack_02',
+        'character_attack_03',
+        'character_damaged'
     ];
 
     //테스트용 임시 변수
-    _baseScale : number = 0.5;
+    _baseScale : number = 1;
     _currentAtkAnim : number = 0;
 
 
@@ -31,7 +32,7 @@ export default class Player extends cc.Component {
     _actionTimeout : number = -1;
 
     onLoad(){
-        this._animation = this.getComponent(cc.Animation);
+        this._animation = cc.find('character' , this.node).getComponent(cc.Animation);
         this._animation.on( 'finished' , this.onAnimFinishedCallback, this);
 
         this._gameManager = cc.find("GameManager").getComponent(GameManager);
@@ -55,15 +56,25 @@ export default class Player extends cc.Component {
         }
         clearTimeout(this._actionTimeout);
         this._actionTimeout = -1;
-        let animState = this._animation.play('characterAtk' + this._currentAtkAnim );
+        let animState = this._animation.play(this._animationName[ this._currentAtkAnim ] );
         animState.speed = 0.1 / this._gameManager.actionInterval ;
     }
 
     onAnimFinishedCallback(){
         this._actionTimeout = setTimeout( ()=>{
-            this._animation.play('characterIdle');
+            this._animation.play( this._animationName[0] );
             this._currentAtkAnim = 0;
             this._actionTimeout = -1;
-        } , (this._gameManager.actionInterval ) * 2 * 1000);
+        } , (this._gameManager.actionInterval ) * 1000);
+    }
+
+    damaged( dirLeft : boolean ){
+        if (dirLeft )
+            this.node.scaleX = this._baseScale * -1;
+        else 
+            this.node.scaleX = this._baseScale;
+
+
+        let animState = this._animation.play(this._animationName[ 4] );
     }
 }
