@@ -148,7 +148,7 @@ export default class Monster extends cc.Component {
         }
         let targetPosition= cc.v2( targetX , 300);
         cc.tween( this.node )
-        .to( 0.8 , { opacity : 0 , position : targetPosition , rotation : 1080})
+        .to( 0.8 , { opacity : 0 , position : targetPosition , angle : 1080})
         .removeSelf()
         .start();
         // this.node.removeFromParent();

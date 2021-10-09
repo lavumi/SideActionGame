@@ -255,7 +255,7 @@ export default class GameManager extends cc.Component {
 
     attackMonster(){
         // let atkEffectRnd = Math.floor(Math.random() * 6);
-        this._soundController.playEffect(1 + 2);
+        this._soundController.playEffect(3);
         if ( this._monsterArr.length === 0 ) return; 
 
         if ( this._monsterArr[0].damaged( this._feverMode )  ){
