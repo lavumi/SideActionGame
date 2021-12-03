@@ -4,11 +4,12 @@
     "_name": "character_damaged",
     "_objFlags": 0,
     "_native": "",
-    "sample": 20,
-    "speed": 1,
+    "sample": 13,
+    "speed": 0.5,
     "wrapMode": 1,
-    "_duration": 0.05,
-    "_hash": 0,
+    "enableTrsBlending": false,
+    "_duration": 0.07692307692307693,
+    "_hash": 500763545,
     "_tracks": [
       {
         "__id__": 1
@@ -17,8 +18,8 @@
         "__id__": 6
       }
     ],
-    "_events": [],
-    "_exoticAnimation": null
+    "_exoticAnimation": null,
+    "_events": []
   },
   {
     "__type__": "cc.animation.ObjectTrack",
@@ -59,7 +60,7 @@
     "_values": [
       {
         "__uuid__": "c1778f7d-defe-40be-96f9-28e4fd8bc64b@f9941",
-        "__expectedType__": "cc.Asset"
+        "__expectedType__": "cc.SpriteFrame"
       }
     ]
   },
@@ -109,7 +110,7 @@
     "_values": [
       {
         "__uuid__": "e81c011f-31e6-4975-b359-0d6afe97adab@f9941",
-        "__expectedType__": "cc.Asset"
+        "__expectedType__": "cc.SpriteFrame"
       }
     ]
   }

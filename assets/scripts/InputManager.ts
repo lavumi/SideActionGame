@@ -3,8 +3,6 @@ import { _decorator, Component, Node, systemEvent, SystemEvent, EventKeyboard, K
 const { ccclass, property } = _decorator;
 
 
-
-import { CharacterController } from './CharacterController';
 import { GameManager } from './GameManager';
 /**
  * Predefined variables

@@ -1,5 +1,6 @@
 
 import { _decorator, Component, Node, find, AnimationComponent, log , Animation } from 'cc';
+import { DIRECTION } from './Enum';
 const { ccclass, property } = _decorator;
 
 /**
@@ -40,16 +41,28 @@ export class Player extends Component {
     _actionTimeout : number = -1;
     _atkAnimCounter : number = 0;
 
-    attack( dirLeft : boolean){
-        if ( dirLeft )
+    attack( attackDirection : DIRECTION){
+        if ( attackDirection === DIRECTION.LEFT )
             this.node.setScale(-1,1 );
         else
             this.node.setScale(1,1 );
         this._playAtkAnim();
     }
 
+    damaged( enemyDirection : DIRECTION){
+        this.scheduleOnce(()=>{
+            if ( enemyDirection === DIRECTION.LEFT )
+                this.node.setScale(-1,1 );
+            else
+                this.node.setScale(1,1 );
+            this._animation.play( this.ANIM.DAMAGE );
+
+            this._resetAttackAnimation();
+        }, 0.15)
+    }
+
     _playAtkAnim(){
-        let animState = this._animation.play(this.ANIM["ATTACK_" + this._atkAnimCounter ] );
+        this._animation.play(this.ANIM["ATTACK_" + this._atkAnimCounter ] );
         this.unschedule( this._resetAttackAnimation );
         this._atkAnimCounter++;
         if ( this._atkAnimCounter > 2 ){
@@ -64,9 +77,10 @@ export class Player extends Component {
     }
 
     _resetAttackAnimation(){
-        log("reset attack anim");
         this._atkAnimCounter = 0;
     }
+
+
 
     //#endregion
 

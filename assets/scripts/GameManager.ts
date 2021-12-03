@@ -1,8 +1,12 @@
 
-import { _decorator, Component, Node, CCObject, find } from 'cc';
-import { CharacterController } from './CharacterController';
+import { _decorator, Component, Node, CCObject, find, log } from 'cc';
+import { MonsterController } from './MonsterController';
 import { Player } from './Player';
+import { DIRECTION } from './Enum';
 const { ccclass, property } = _decorator;
+
+
+
 
 /**
  * Predefined variables
@@ -23,33 +27,75 @@ export class GameManager extends Component {
     @property(Player)
     player : Player = null!;
 
-    @property(Node)
-    monsterAnchor : Node = null!;
+    @property(MonsterController)
+    monsterController : MonsterController = null!;
+
+    feverFinishDelay = 0.3;
+    gameRestartDelay = 1;
+
+
+
+    //InGame Value
+    _difficulty : number = 0;
+    _score = 0;
+    _fever = 0;
+    _comboCount : number= 0;
+    _maxCombo : number = 0;
+    _timeCount : number = 30;
+    _maxTimeCount : number = 30;
+    // _health = 3;
+    _feverPerScore = 99;
+    _insaneTimer = 0.2;
+    _feverMode : boolean = false;
+
+    _blockInput : boolean = true;
+    _blockInputFeverFinish : boolean = true;
+
+
 
 
     onLoad(){
 
     }
 
-    start () {
-        // [3]
+    start(){
+
+        this.monsterController.initMonsters();
     }
-
-
 
 
     getInput( input : number ){
-
         switch ( input ){
             case 0:
-                this.player.attack(true);
+                this._attack( DIRECTION.LEFT);
                 break;
             case 1:
-                this.player.attack(false);
+                this._attack( DIRECTION.RIGHT);
                 break;
+        }
+    }
+
+
+
+    _attack( direction : number ){
+        // if ( this._blockInput === true  || this._blockInputFeverFinish === true ) return;
+
+        let monsterPosition = this.monsterController.getFrontMonsterPosition();
+        if ( this._feverMode === true ){
+            this.monsterController.attackMonster( monsterPosition , true )
+            this.player.attack( monsterPosition  );
+            return;
+        }
+        else if ( this.monsterController.attackMonster( direction ) === true ){
+            this.player.attack( direction );
+        }
+        else {
+            this.player.attack( direction );
+            this.player.damaged( monsterPosition );
         }
 
     }
+
 
 }
 
