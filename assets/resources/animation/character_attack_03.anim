@@ -1,0 +1,146 @@
+[
+  {
+    "__type__": "cc.AnimationClip",
+    "_name": "character_attack_03",
+    "_objFlags": 0,
+    "_native": "",
+    "sample": 20,
+    "speed": 1,
+    "wrapMode": 1,
+    "_duration": 0.2,
+    "_hash": 0,
+    "_tracks": [
+      {
+        "__id__": 1
+      },
+      {
+        "__id__": 6
+      }
+    ],
+    "_events": [],
+    "_exoticAnimation": null
+  },
+  {
+    "__type__": "cc.animation.ObjectTrack",
+    "_binding": {
+      "__type__": "cc.animation.TrackBinding",
+      "path": {
+        "__id__": 2
+      }
+    },
+    "_channel": {
+      "__id__": 4
+    }
+  },
+  {
+    "__type__": "cc.animation.TrackPath",
+    "_paths": [
+      {
+        "__id__": 3
+      },
+      "spriteFrame"
+    ]
+  },
+  {
+    "__type__": "cc.animation.ComponentPath",
+    "component": "cc.Sprite"
+  },
+  {
+    "__type__": "cc.animation.Channel",
+    "_curve": {
+      "__id__": 5
+    }
+  },
+  {
+    "__type__": "cc.ObjectCurve",
+    "_times": [
+      0,
+      0.05,
+      0.1,
+      0.15
+    ],
+    "_values": [
+      {
+        "__uuid__": "cf4fa790-6036-4cf3-9d08-8d45109c2fb6@f9941",
+        "__expectedType__": "cc.Asset"
+      },
+      {
+        "__uuid__": "dae55c1c-103b-4b68-8ff3-c77ae0f4d7a9@f9941",
+        "__expectedType__": "cc.Asset"
+      },
+      {
+        "__uuid__": "44b4a070-5534-404d-b07b-c59cd3f17d0f@f9941",
+        "__expectedType__": "cc.Asset"
+      },
+      {
+        "__uuid__": "c28d8d39-390d-475d-8b8d-de7239cad546@f9941",
+        "__expectedType__": "cc.Asset"
+      }
+    ]
+  },
+  {
+    "__type__": "cc.animation.ObjectTrack",
+    "_binding": {
+      "__type__": "cc.animation.TrackBinding",
+      "path": {
+        "__id__": 7
+      }
+    },
+    "_channel": {
+      "__id__": 10
+    }
+  },
+  {
+    "__type__": "cc.animation.TrackPath",
+    "_paths": [
+      {
+        "__id__": 8
+      },
+      {
+        "__id__": 9
+      },
+      "spriteFrame"
+    ]
+  },
+  {
+    "__type__": "cc.animation.HierarchyPath",
+    "path": "weapon"
+  },
+  {
+    "__type__": "cc.animation.ComponentPath",
+    "component": "cc.Sprite"
+  },
+  {
+    "__type__": "cc.animation.Channel",
+    "_curve": {
+      "__id__": 11
+    }
+  },
+  {
+    "__type__": "cc.ObjectCurve",
+    "_times": [
+      0,
+      0.05,
+      0.1,
+      0.15
+    ],
+    "_values": [
+      {
+        "__uuid__": "207f4c6f-bd3e-4103-a9a5-da1604ea2472@f9941",
+        "__expectedType__": "cc.Asset"
+      },
+      {
+        "__uuid__": "49ee1aa7-4ea9-41c2-887e-e3030838a0f2@f9941",
+        "__expectedType__": "cc.Asset"
+      },
+      {
+        "__uuid__": "f99163b1-a702-4c2a-b1dd-b2d13303f937@f9941",
+        "__expectedType__": "cc.Asset"
+      },
+      {
+        "__uuid__": "b55f9e84-1a7d-402c-8cf7-4925d5ded620@f9941",
+        "__expectedType__": "cc.Asset"
+      }
+    ]
+  }
+]
