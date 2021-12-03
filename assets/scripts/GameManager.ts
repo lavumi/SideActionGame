@@ -57,7 +57,7 @@ export class GameManager extends Component {
     onLoad(){
 
     }
-
+    
     start(){
 
         this.monsterController.initMonsters();
