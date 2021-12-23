@@ -2,5 +2,15 @@
   "__version__": "1.2.9",
   "textureCompressConfig": {
     "userPreset": {}
+  },
+  "splash-setting": {
+    "url": "/Users/lavumi/Downloads/_sample-5f0b8e00b97e522f67dc097c52205644.jpg",
+    "displayWatermark": false,
+    "clearColor": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    }
   }
 }

@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, ProgressBar, Label, find } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
@@ -16,20 +16,66 @@ const { ccclass, property } = _decorator;
  
 @ccclass('GameUIController')
 export class GameUIController extends Component {
-    // [1]
-    // dummy = '';
 
-    // [2]
-    // @property
-    // serializableDummy = 0;
+    _gameTimer : ProgressBar = null!;
+    _feverGauge : ProgressBar = null!;
+    _hearts : Node[] = [];
+    _lbScore : Label = null!;
+    _lbCombo : Label = null!;
 
-    start () {
-        // [3]
+
+    onLoad(){
+        this._gameTimer = find("GameTimer" , this.node ).getComponent(ProgressBar);
+        this._feverGauge = find("PlayerStatus/FeverGauge" , this.node ).getComponent(ProgressBar);
+
+        this._hearts = find("PlayerStatus/HeartContainer", this.node ).children;
+        this._lbScore = find("lbScore" , this.node ).getComponent(Label);
+        this._lbCombo = find("lbCombo/lbComboNumber1" , this.node ).getComponent(Label);
+
     }
 
-    // update (deltaTime: number) {
-    //     // [4]
-    // }
+
+
+    initGameUI( heart : number ){
+        this.setTimer(1);
+        this.setFever(0);
+        this.setScore(0);
+        this.setComboCount( 0 );
+        this.setHeart( heart );
+    }
+
+    setTimer( time : number ){
+        this._gameTimer.progress = time;
+    }
+
+    setFever( fever : number ){
+        this._feverGauge.progress = fever;
+    }
+
+    setScore( score : number ){
+        this._lbScore.string = score.toString();
+    }
+
+    setComboCount ( combo : number ){
+        this._lbCombo.string = combo.toString();
+        if ( combo === 0 )
+            this._lbCombo.node.parent.active = false;
+        else {
+            this._lbCombo.node.parent.active = true;
+        }
+    }
+
+    setHeart( heart : number ){
+        
+        this._hearts.forEach((heartNode, index)=>{
+            if ( index < heart ){
+                heartNode.active = true;
+            }
+            else {
+                heartNode.active = false;
+            }
+        })
+    }
 }
 
 /**

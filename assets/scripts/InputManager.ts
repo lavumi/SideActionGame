@@ -56,7 +56,7 @@ export class InputManager extends Component {
                     this._sendInput(0);
                 }
                 this._pressA = true;
-                this.blockInput();
+                // this.blockInput();
                 
                 break;
             case KeyCode.ARROW_RIGHT:
@@ -64,7 +64,7 @@ export class InputManager extends Component {
                     this._sendInput(1);
                 }
                 this._pressB = true;
-                this.blockInput();
+                // this.blockInput();
                 break;
         }
 

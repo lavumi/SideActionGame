@@ -50,6 +50,8 @@ export class Player extends Component {
     }
 
     damaged( enemyDirection : DIRECTION){
+        this.attack( enemyDirection * -1 );
+        
         this.scheduleOnce(()=>{
             if ( enemyDirection === DIRECTION.LEFT )
                 this.node.setScale(-1,1 );
