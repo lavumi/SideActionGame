@@ -73,7 +73,7 @@ export class GameManager extends Component {
         this.monsterController.initMonsters();
         this.gameUI.initGameUI(3);
 
-        this.schedule( this._updateTimer );
+        // this.schedule( this._updateTimer );
         this._onGame = true;
     }
 
@@ -144,12 +144,20 @@ export class GameManager extends Component {
 
 
     update(dt : number ){
+
+
+
+        if ( this._onGame === false ) {
+            return;
+        }
+
         this._updateTimer( dt);
 
         if ( this._health <= 0 || 
             this._timeCount <= 0) {
             this._gameOver();
         }
+
     }
 
     _updateTimer(dt : number ){
@@ -160,7 +168,6 @@ export class GameManager extends Component {
 
 
     _gameOver(){
-        // this._timeCount = 0;
         this.unschedule( this._updateTimer );
         this._onGame = false;
     }
