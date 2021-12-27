@@ -6,7 +6,7 @@
         "_value": true
       },
       "graphcis": {
-        "_value": true
+        "_value": false
       },
       "gfx-webgl": {
         "_value": true
@@ -28,7 +28,7 @@
       },
       "physics": {
         "_value": false,
-        "_option": "physics-ammo"
+        "_option": "physics-builtin"
       },
       "physics-ammo": {
         "_value": false
@@ -62,7 +62,7 @@
         "_value": true
       },
       "particle-2d": {
-        "_value": false
+        "_value": true
       },
       "audio": {
         "_value": true
@@ -92,11 +92,12 @@
     "includeModules": [
       "base",
       "gfx-webgl",
-      "2d",
-      "ui",
       "profiler",
       "audio",
-      "tween"
+      "tween",
+      "2d",
+      "ui",
+      "particle-2d"
     ],
     "noDeprecatedFeatures": {
       "value": false,

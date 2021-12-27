@@ -1,4 +1,9 @@
-export default class GlobalVariables{
-    static actionInverval : number = 0.1;
+import * as JSBReflection from "./JSBReflection";
 
-}
+declare global {
+    interface Window {
+        JSBReflection : any
+    }
+  }
+
+  window.JSBReflection = JSBReflection;

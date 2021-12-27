@@ -19,7 +19,7 @@
         "magfilter": "nearest",
         "wrapModeT": "clamp-to-edge",
         "wrapModeS": "clamp-to-edge",
-        "mipfilter": "none",
+        "mipfilter": "nearest",
         "imageUuidOrDatabaseUri": "bcb385a9-ff45-4675-991d-759e67b55606",
         "anisotropy": 0,
         "isUuid": true
@@ -69,6 +69,10 @@
   "userData": {
     "type": "sprite-frame",
     "hasAlpha": true,
-    "redirect": "bcb385a9-ff45-4675-991d-759e67b55606@f9941"
+    "redirect": "bcb385a9-ff45-4675-991d-759e67b55606@f9941",
+    "compressSettings": {
+      "useCompressTexture": true,
+      "presetId": "transparent"
+    }
   }
 }

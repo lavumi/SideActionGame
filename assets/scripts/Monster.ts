@@ -2,7 +2,6 @@
 import { _decorator, Component, Node, CCObject, Vec3, tween, Color, Animation, find, ProgressBar, Sprite, v2, v3, UIOpacityComponent } from 'cc';
 import { DIRECTION } from './Enum';
 import { GameManager } from './GameManager';
-import GlobalVariables from './GlobalVariables';
 const { ccclass, property } = _decorator;
 
 /**
@@ -135,7 +134,7 @@ export class Monster extends Component {
         }
         else {
             tween(this.node)
-            .delay(GlobalVariables.actionInverval)
+            .delay(0.1)
             .call( ()=>{
                 this._animation.play('monsterDamage');
             })
@@ -170,7 +169,7 @@ export class Monster extends Component {
 
     stepForward( targetPos : Vec3){
         tween( this.node )
-        .to( GlobalVariables.actionInverval , { position : targetPos})
+        .to( 0.1 , { position : targetPos})
         .start();
     }
 

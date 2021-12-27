@@ -4,6 +4,7 @@ import { MonsterController } from './MonsterController';
 import { Player } from './Player';
 import { DIRECTION } from './Enum';
 import { GameUIController } from './GameUIController';
+import { GamebaseWrapper } from './GamebaseWrapper';
 const { ccclass, property } = _decorator;
 
 
@@ -70,11 +71,23 @@ export class GameManager extends Component {
     
     start(){
 
+        log("game start called");
+
         this.monsterController.initMonsters();
         this.gameUI.initGameUI(3);
-
-        // this.schedule( this._updateTimer );
         this._onGame = true;
+
+        // GamebaseWrapper.setGameInit( ()=>{
+        //     this.gameUI.initGameUI(3);
+        // });
+        // let ret = jsb.reflection.callStaticMethod(
+        //     "NativeOcClass",
+        //     "callNativeUIWithTitle:andContent:",
+        //     "cocos2d-js testing",
+        //     "GamebaseWrapper.gameInitFinished();"
+        // )
+
+        // log(ret );
     }
 
 
@@ -89,9 +102,7 @@ export class GameManager extends Component {
                 break;
         }
     }
-
-
-
+  
     _attack( direction : number ){
 
         let monsterPosition = this.monsterController.getFrontMonsterPosition();
