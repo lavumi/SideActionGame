@@ -92,12 +92,12 @@
     "includeModules": [
       "base",
       "gfx-webgl",
-      "profiler",
-      "audio",
-      "tween",
       "2d",
       "ui",
-      "particle-2d"
+      "profiler",
+      "particle-2d",
+      "audio",
+      "tween"
     ],
     "noDeprecatedFeatures": {
       "value": false,

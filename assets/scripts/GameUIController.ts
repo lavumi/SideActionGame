@@ -13,7 +13,7 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
  *
  */
- 
+
 @ccclass('GameUIController')
 export class GameUIController extends Component {
 
@@ -66,7 +66,7 @@ export class GameUIController extends Component {
     }
 
     setHeart( heart : number ){
-        
+
         this._hearts.forEach((heartNode, index)=>{
             if ( index < heart ){
                 heartNode.active = true;
@@ -76,6 +76,8 @@ export class GameUIController extends Component {
             }
         })
     }
+
+
 }
 
 /**

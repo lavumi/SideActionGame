@@ -15,13 +15,16 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
  *
  */
- 
+
 @ccclass('MonsterController')
 export class MonsterController extends Component {
 
 
     @property(Prefab)
     monsterPrefab = null!;
+
+    @property
+    difficulty = 0;
 
 
     _monsterCounter: number = 0;
@@ -38,8 +41,8 @@ export class MonsterController extends Component {
 
 
 
-    initMonsters( ){
-
+    initMonsters( diff : number ){
+        this.difficulty = diff;
         for ( let i = 0 ; i < 5 ; i ++ ){
             this.makeNewMonster();
         }
@@ -63,8 +66,8 @@ export class MonsterController extends Component {
         let initPos = v3(this._monsterDistance * 7 *  direction , 0 ,1);
         let moveTargetPos = v3(this._monsterContainer.length * this._monsterDistance *  direction , 0 ,1);
 
-        monster.initMonster( initPos , moveTargetPos , direction ,0);
-    } 
+        monster.initMonster( initPos , moveTargetPos , direction ,this.difficulty);
+    }
 
 
     getFrontMonsterPosition() : DIRECTION {

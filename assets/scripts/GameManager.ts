@@ -21,7 +21,7 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
  *
  */
- 
+
 @ccclass('GameManager')
 export class GameManager extends Component {
 
@@ -32,6 +32,10 @@ export class GameManager extends Component {
     @property(MonsterController)
     monsterController : MonsterController = null!;
 
+    @property(Node)
+
+
+
     feverFinishDelay = 0.3;
     gameRestartDelay = 1;
 
@@ -39,6 +43,7 @@ export class GameManager extends Component {
 
 
     gameUI : GameUIController = null!;
+    // menuUI :
 
 
 
@@ -51,7 +56,7 @@ export class GameManager extends Component {
     _timeCount : number = 30;
     _maxTimeCount : number = 30;
     _health = 3;
-    _feverPerScore = 99;
+    _feverPerScore = 40;
     _insaneTimer = 0.2;
 
 
@@ -68,14 +73,11 @@ export class GameManager extends Component {
     onLoad(){
         this.gameUI = find("Canvas/GameUI").getComponent(GameUIController);
     }
-    
+
     start(){
 
         log("game start called");
 
-        this.monsterController.initMonsters();
-        this.gameUI.initGameUI(3);
-        this._onGame = true;
 
         // GamebaseWrapper.setGameInit( ()=>{
         //     this.gameUI.initGameUI(3);
@@ -91,6 +93,15 @@ export class GameManager extends Component {
     }
 
 
+    startGame(diff : number){
+
+        this.monsterController.initMonsters(diff);
+        this.gameUI.node.active = true;
+        this.gameUI.initGameUI(3);
+        this._onGame = true;
+    }
+
+
     getInput( input : number ){
         if ( this._onGame === false ) return;
         switch ( input ){
@@ -102,7 +113,7 @@ export class GameManager extends Component {
                 break;
         }
     }
-  
+
     _attack( direction : number ){
 
         let monsterPosition = this.monsterController.getFrontMonsterPosition();
@@ -116,7 +127,7 @@ export class GameManager extends Component {
         }
         else if ( this.monsterController.attackMonster( direction ) === true ){
 
-            this.player.attack( direction );    
+            this.player.attack( direction );
 
 
             this._attackSuccess();
@@ -134,7 +145,7 @@ export class GameManager extends Component {
     _attackSuccess(){
         this.gameUI.setScore(++this._score);
 
-        
+
         this.gameUI.setComboCount(++this._comboCount);
         this._maxCombo = this._comboCount > this._maxCombo ? this._comboCount : this._maxCombo;
 
@@ -156,15 +167,13 @@ export class GameManager extends Component {
 
     update(dt : number ){
 
-
-
         if ( this._onGame === false ) {
             return;
         }
 
         this._updateTimer( dt);
 
-        if ( this._health <= 0 || 
+        if ( this._health <= 0 ||
             this._timeCount <= 0) {
             this._gameOver();
         }
@@ -175,8 +184,63 @@ export class GameManager extends Component {
         this._timeCount -= dt;
         this.gameUI.setTimer( this._timeCount / this._maxTimeCount);
     }
-
-
+    //
+    // feverOn(){
+    //     this._feverMode = true;
+    //     this.gameUI.setFeverMode();
+    //     this.unschedule( this._updateTimer );
+    //
+    //     // this._timeCount--;
+    //     // this._updateTimeCount();
+    //
+    //     this.schedule( this._updateFever  );
+    // }
+    //
+    // _updateFever( dt : number){
+    //     this._fever -= dt * 0.4;
+    //     this.gameUI.updateFever( this._fever );
+    //     if ( this._fever <= 0){
+    //         this.unschedule( this._updateFever );
+    //         this.finishFever();
+    //     }
+    // }
+    //
+    // finishFever(){
+    //     cc.log("fever finished" , "block inpug");
+    //     this._feverMode = false;
+    //     this._blockInputFeverFinish = true;
+    //
+    //
+    //     //몬스터 싹 날리기
+    //     this._monsterArr.forEach( element =>{
+    //         element.damaged( true );
+    //     });
+    //     this._monsterDirectionArray.length = 0;
+    //     this._monsterArr.length = 0;
+    //     //
+    //
+    //
+    //
+    //     this._gameUI.finishFeverMode( this.feverFinishDelay , this.gameRestartDelay );
+    //
+    //
+    //
+    //
+    //     cc.tween( this.node )
+    //         .delay( this.feverFinishDelay )
+    //         .call(()=>{
+    //             for ( let i = 0 ; i < this._monsterCount ; i ++ ){
+    //                 this.makeNewMonster();
+    //             }
+    //         })
+    //         .delay( this.gameRestartDelay )
+    //         .call( ()=>{
+    //             this.schedule( this._updateTimer );
+    //             this._blockInputFeverFinish = false;
+    //             this.setInsaneTimer();
+    //         })
+    //         .start();
+    // }
 
     _gameOver(){
         this.unschedule( this._updateTimer );
