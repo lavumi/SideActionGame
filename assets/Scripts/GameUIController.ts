@@ -30,7 +30,7 @@ export default class GameUIController extends cc.Component {
 
     _progTime : cc.ProgressBar = null!;
     // _lbTime     : cc.Label = null!;
-    // _heartContainer : cc.Node = null!;
+    _heartContainer : cc.Node = null!;
 
 
     _lbCombo : cc.Label = null!;
@@ -48,12 +48,12 @@ export default class GameUIController extends cc.Component {
         this._lbReady           = cc.find("lbReady", this._gameUI);
         this._lbGo              = cc.find("lbGo", this._gameUI);
         this._lbFever           = cc.find("lbFever", this._gameUI);
-        this._feverGauge        = cc.find("feverGauge", this._gameUI).getComponent(cc.ProgressBar);
+        this._feverGauge        = cc.find("PlayerStatus/feverGauge", this._gameUI).getComponent(cc.ProgressBar);
         this._progTime          = cc.find("gameTimer" , this._gameUI ).getComponent(cc.ProgressBar ); 
         this._btnMain           = cc.find("lbGameOver/btnMain" , this._gameUI );
         this._lbFeverFinish     = cc.find("lbFeverFinish", this._gameUI);
         this._lbCombo           = cc.find("comboUI/lbCombo", this._gameUI).getComponent(cc.Label);
-
+        this._heartContainer    = cc.find("PlayerStatus/heartContainer", this._gameUI);
 
         this._lbScore.node.active    = true;
         this._progTime.node.active     = true;
@@ -79,16 +79,7 @@ export default class GameUIController extends cc.Component {
 
 
 
-        // this._heartContainer.active = true;
-        // this._heartContainer.removeAllChildren();
-
-
-        // let heart = cc.instantiate(this.heartPrefab);
-        // this._heartContainer.addChild(heart);
-        // heart = cc.instantiate(this.heartPrefab);
-        // this._heartContainer.addChild(heart);
-        // heart = cc.instantiate(this.heartPrefab);
-        // this._heartContainer.addChild(heart);
+        this._heartContainer.active = false;
     }
 
     startCountDown( countDown : number , gameStartCallback : ()=>void){
@@ -110,15 +101,15 @@ export default class GameUIController extends cc.Component {
     }
 
 
-    // updateHealth( health : number ){
-    //     if ( health < 0) cc.warn( "health below 0 " , health );
-    //     for( let i = 0 ; i < this._heartContainer.children.length ; i ++ ){
-    //         if ( i < health )
-    //             this._heartContainer.children[i].active = true;
-    //         else 
-    //             this._heartContainer.children[i].active = false;
-    //     }
-    // }
+    updateHealth( health : number ){
+        if ( health < 0) cc.warn( "health below 0 " , health );
+        for( let i = 0 ; i < this._heartContainer.children.length ; i ++ ){
+            if ( i < health )
+                this._heartContainer.children[i].active = true;
+            else 
+                this._heartContainer.children[i].active = false;
+        }
+    }
 
     updateRemainTime( time : number ){
         // this._lbTime.string = time + "";
@@ -163,6 +154,6 @@ export default class GameUIController extends cc.Component {
             this._lbCombo.node.parent.active = true;
         }
 
-        this._lbCombo.string = count + "\nCombo";
+        this._lbCombo.string = count.toString();
     }
 }

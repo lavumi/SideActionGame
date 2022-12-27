@@ -351,6 +351,7 @@ export default class GameManager extends cc.Component {
 
         this._comboCount = 0;
         this._gameUI.updateCombo(       this._comboCount );
+        // this._gameUI.updateHealth(1);
     }
 
 
